@@ -35,7 +35,8 @@ export default {
 
 }
 h1{
-  font-size: 2.5rem;
+  font-size: 3rem;
+  margin-bottom: 4rem;
 }
 .text {
   color: white;
