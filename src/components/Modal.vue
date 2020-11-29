@@ -1,36 +1,44 @@
 <template>
   <div class="wrapper">
     <div class="modal">
-      <div class="close" @click="close()">x</div>
-      <div class="content">{{ message }}</div>
-      <div>
-        <div :key="index" v-for="(platform, index) in platforms" @click="onClick(choice.value)"><img :src="'@/assets/' + platform.icon" alt="Spotify"/> {{ platform.label }}</div>
-      </div>
+      <div class="close" @click="close()">X</div>
+      <ul class="content">
+
+          <li  v-for="(platform, index) in platforms" :key="index" @click="onClick(choice.value)"><a :href="platform.url" target="_blank"><img
+              :src="require(`@/assets/${platform.label}.png`)" :alt="platform.label"/>{{ platform.label }}</a>
+          </li>
+
+
+
+      </ul>
     </div>
   </div>
 </template>
 
 <script>
 export default {
-  props: {
-    message: String,
-  },
   data() {
-      return {
-        platforms: [
-          {
-            label: 'Spotify',
-            url: 'https://open.spotify.com/show/7qp2xN3wvPc2aqJcCVV8FD',
-            icon: "Spotify.png"
-          },
-          {
-            label: 'iTunes',
-            url: 'https://podcasts.apple.com/us/podcast/st%C3%A9r%C3%A9o-libre/id1468910081?uo=4',
-            icon: "@/src/assets/Spotify.png"
-          },
-        ]
+    return {
+      platforms: [
+        {
+          label: 'Spotify',
+          url: 'https://open.spotify.com/show/7qp2xN3wvPc2aqJcCVV8FD',
+        },
+        {
+          label: 'Anchor',
+          url: 'https://anchor.fm/stereo-libre',
+        },
+        {
+          label: 'iTunes',
+          url: 'https://podcasts.apple.com/us/podcast/st%C3%A9r%C3%A9o-libre/id1468910081?uo=4',
+        },
+        {
+          label: 'Google-Podcasts',
+          url: 'https://podcasts.google.com/feed/aHR0cHM6Ly9hbmNob3IuZm0vcy9jMWY4Y2ZjL3BvZGNhc3QvcnNz',
+        },
+      ]
 
-      }
+    }
   },
   methods: {
     onClick(event) {
@@ -56,6 +64,7 @@ export default {
   flex-direction: column;
   align-items: center;
   justify-content: center;
+  color: #2b2b2b;
 
   .modal {
     position: relative;
@@ -64,20 +73,47 @@ export default {
     align-items: center;
     justify-content: center;
     background: #fff;
-    padding: 20px;
+    padding: 25px;
     width: 30%;
-    border-radius: 2px;
+    border-radius: 5px;
     box-shadow: 0 0 4px 0 rgba(0, 0, 0, 0.5);
 
     .close {
       font-weight: bold;
       position: absolute;
-      top: 10px;
-      right: 15px;
+      color: white;
+      background: #0a0a0a;
+      border-radius: 50%;
+      padding: 4px 12px;
+      top: -10px;
+      right: -10px;
     }
 
     .content {
-      padding: 50px;
+      list-style: none;
+      text-align: left;
+      padding-left: 0;
+      li {
+        min-width: 20rem;
+        padding: 0;
+        margin: 0 0 20px 0;
+        padding-bottom: 20px;
+        border-bottom: 1px solid #f7f7f7;
+        &:last-child {
+          margin-bottom: 0;
+        }
+      }
+      a {
+        text-decoration: none;
+        color: #2b2b2b;
+        img {
+          display: inline-block;
+          vertical-align: middle;
+          margin-right: 20px;
+          height: 32px;
+          width: 32px;
+        }
+      }
     }
   }
 }

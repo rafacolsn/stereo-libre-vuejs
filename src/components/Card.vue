@@ -1,17 +1,18 @@
 <template>
   <div class="card">
-    <div class="tag">{{ (category.name).toUpperCase() }}</div>
+    <div class="tag" :style="'background:' + color">{{ tag }}</div>
     <div class="img_wrapper">
-      <img :src="image.guid.rendered" alt="" class="image">
+      <img :src="image.guid.rendered" :style="hoverStyle" alt="" class="image">
     </div>
-    <h4 v-html="(post.title.rendered).toUpperCase()"></h4>
+    <h4 :style="'color:' + color" v-html="(post.title.rendered).toUpperCase()"></h4>
     <div class="postData">{{ postData }}</div>
-    <div v-html="post.content.rendered"></div>
+    <div class="text" v-html="post.excerpt.rendered"></div>
   </div>
 </template>
 
 <script>
 import moment from 'moment';
+import {mapGetters} from 'vuex';
 
 export default {
   name: "Card",
@@ -23,32 +24,47 @@ export default {
   },
   data() {
     return {
-      image: '',
-      category: null
+      image: {
+        guid: {
+          rendered: null
+        }
+      },
+      category: {
+        name: null
+      },
+      color: null
     }
   },
   computed: {
+    ...mapGetters('post', ['getCategoryById', 'getColorById']),
     postData() {
-      moment.locale('fr');
       return moment(this.post.date).format('DD MMMM YYYY') + ' | ' + this.category.name
+    },
+    tag() {
+      return (this.category.name).toUpperCase()
+    },
+    hoverStyle() {
+      return {
+        '--color': this.color
+      }
     }
   },
   created() {
+    let id = this.post.categories.find(id => id !== 4); // we don't want the 4th : Episodes
+    this.category = this.getCategoryById(id)
+    this.color = this.getColorById(id)[id] + ';';
+
+
     fetch(`https://stereolibre.be/wp-json/wp/v2/media/${this.post.featured_media}`).then(resp => {
       resp.json().then(r => {
         this.image = r
-      })
-    })
-    fetch(`https://stereolibre.be/wp-json/wp/v2/categories/${this.post.categories[1]}`).then(resp => {
-      resp.json().then(r => {
-        this.category = r
       })
     })
   }
 }
 </script>
 
-<style scoped>
+<style lang="scss" scoped>
 .card {
   max-width: 20rem;
   background: white;
@@ -63,9 +79,8 @@ export default {
 
 .tag {
   position: absolute;
-  top: 5%;
+  top: 3rem;
   left: 0;
-  background: #05822E;
   color: white;
   padding: .3rem 1rem .3rem 2rem;
   border-radius: 0 5px 5px 0;
@@ -76,16 +91,13 @@ export default {
   width: 20rem;
   overflow: hidden;
   border-radius: 10px;
-
 }
 
 .image {
+  //min-width: 100%;
   max-width: 100%;
-  /*min-height: 100%;*/
-}
+  //min-height: 100%;
+  max-height: 100%;
 
-h4 {
-  /*text-align: center;*/
-  color: #05822E;
 }
 </style>

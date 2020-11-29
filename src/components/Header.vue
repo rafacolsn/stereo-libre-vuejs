@@ -1,6 +1,6 @@
 <template>
   <div class="wrapper">
-    <img id="logo" alt="header" src="@/assets/logo-sl.jpg">
+    <img id="logo" alt="logo" src="@/assets/logo-sl.jpg">
     <img id="header" alt="header" src="@/assets/couv.jpg">
     <div class="text">
       <h1>STEREO LIBRE</h1>
@@ -8,7 +8,8 @@
         Le rendez-vous du libertinage musical, enfin déconfiné.
         Deux animateurs et chacun sa playlist de retour en
         studio.
-      </p></div>
+      </p>
+    </div>
   </div>
 </template>
 
@@ -22,17 +23,12 @@ export default {
 .wrapper {
   height: 100%;
   max-height: calc(100% - 10rem);
-  /*!*width: 100%;*!*/
   overflow: hidden;
-  /*content: "";*/
-  /*display: block;*/
   position: absolute;
-  /*!*min-height: 25rem;*!*/
   top: calc(0% - 10rem);
   left: 0;
-  /*margin-bottom: 25rem;*/
-  /*border: 2px solid red;*/
-
+  /*background: #05822E;*/
+  /*background-image: url("../assets/couv.jpg");*/
 }
 h1{
   font-size: 3rem;
@@ -43,8 +39,6 @@ h1{
   position: absolute;
   top: 20%;
   left: 25%;
-  /*filter: drop-shadow(0 0 0.75rem #ffffff);*/
-
 }
 
 .text p {
@@ -52,6 +46,7 @@ h1{
   background: black;
   border-radius: 5px;
   padding: .2rem 1rem;
+  margin-top: 20rem;
 }
 
 
@@ -66,4 +61,6 @@ h1{
   bottom: 0;
   left: 3%;
 }
+
+
 </style>

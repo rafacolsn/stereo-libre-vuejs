@@ -2,10 +2,10 @@
   <div class="content">
     <div class="card-header">
       <h4>NOS PODCASTS</h4>
-      <h5><a @click="showModal = true">S'abonner</a></h5>
+      <p><a @click="showModal = true">S'abonner</a></p>
       <Modal v-if="showModal" v-on:modalEvent="choosePlatform"></Modal>
     </div>
-    <div class="cards">
+    <div class="cards" v-if="! loading">
       <Card v-for="post in posts" :key="post.id" :post="post"></Card>
     </div>
   </div>
@@ -14,14 +14,17 @@
 <script>
 import Card from '@/components/Card';
 import Modal from '@/components/Modal'
+import {mapState} from 'vuex';
 
 export default {
   name: "Cards",
   data() {
     return {
-      posts: [],
       showModal: false,
     }
+  },
+  computed: {
+    ...mapState("post", ["loading", "posts", "categories"])
   },
   methods: {
     choosePlatform(event) {
@@ -36,10 +39,8 @@ export default {
     }
   },
   created() {
-    fetch('https://stereolibre.be/wp-json/wp/v2/posts/?categories=12&per_page=100').then(resp => {
-      resp.json().then(r => this.posts = r)
-
-    })
+    this.$store.dispatch("post/getPosts");
+    this.$store.dispatch("post/getCategories");
   },
   components: {
     Card,
@@ -51,7 +52,7 @@ export default {
 <style scoped>
 .content {
   /*margin from header*/
-  margin: 45rem auto 0;
+  margin: 35rem auto 0;
   width: 80%;
 }
 
@@ -60,12 +61,14 @@ export default {
   color: white;
   min-height: 10rem;
   display: flex;
+  flex-direction: column;
   justify-content: center;
   align-items: center;
 }
 
 .card-header h4 {
   font-size: 2rem;
+  margin-bottom: 0;
 }
 
 .cards {
