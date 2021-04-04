@@ -6,7 +6,7 @@
       <Modal v-if="showModal" v-on:modalEvent="choosePlatform"></Modal>
     </div>
     <div class="cards" v-if="! loading">
-      <Card v-for="post in posts" :key="post.id" :post="post"></Card>
+      <Card v-for="post in lastPostByCategories" :key="post.id" :post="post"></Card>
     </div>
   </div>
 </template>
@@ -14,7 +14,7 @@
 <script>
 import Card from '@/components/Card';
 import Modal from '@/components/Modal'
-import {mapState} from 'vuex';
+import {mapState, mapGetters} from 'vuex';
 
 export default {
   name: "Cards",
@@ -24,7 +24,8 @@ export default {
     }
   },
   computed: {
-    ...mapState("post", ["loading", "posts", "categories"])
+    ...mapState("post", ["loading", "posts", "categories", "lastPostByCategories"]),
+    ...mapGetters("post", ["categoriesIds"]),
   },
   methods: {
     choosePlatform(event) {
@@ -39,6 +40,9 @@ export default {
     }
   },
   created() {
+    this.categoriesIds.map(id => {
+      this.$store.dispatch("post/getOnePostByCategoryId", id);
+    })
     this.$store.dispatch("post/getPosts");
     this.$store.dispatch("post/getCategories");
   },

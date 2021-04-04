@@ -13,7 +13,8 @@ const getDefaultState = () => {
             {12: '#177319'}, // Thème
             {11: '#5d5d4b'}, // Vintage
             {16: '#d650d0'} // Voyages
-        ]
+        ],
+        lastPostByCategories: []
     };
 };
 
@@ -29,6 +30,12 @@ export default {
         },
         setCategories(state, value) {
             state.categories = value
+        },
+        setLastPostByCategories(state, value) {
+            state.lastPostByCategories.push(value)
+        },
+        resetLastPostByCategories(state) {
+            state.lastPostByCategories = []
         }
     },
     actions: {
@@ -37,6 +44,16 @@ export default {
             fetch('https://stereolibre.be/wp-json/wp/v2/posts/?categories=4&per_page=100').then(resp => {
                 resp.json().then(r => {
                     context.commit("setPosts", r)
+                    context.commit("setLoading", false)
+                })
+            })
+
+        },
+        getOnePostByCategoryId(context, id) {
+            context.commit("setLoading", true)
+            fetch(`https://stereolibre.be/wp-json/wp/v2/posts/?categories=${id}&per_page=1`).then(resp => {
+                resp.json().then(r => {
+                    context.commit("setLastPostByCategories", r)
                     context.commit("setLoading", false)
                 })
             })
@@ -56,6 +73,9 @@ export default {
         },
         getColorById: (state) => (id) => {
             return state.colors.find(color => color[id])
+        },
+        categoriesIds(state) {
+            return state.categories.map(category => category.id).filter(id => id !== 4);
         }
     }
 }

@@ -50,7 +50,7 @@ export default {
     }
   },
   created() {
-    let id = this.post.categories.find(id => id !== 4); // we don't want the 4th : Episodes
+    const id = this.post.categories.find(id => id !== 4); // we don't want the 4th : Episodes
     this.category = this.getCategoryById(id)
     this.color = this.getColorById(id)[id] + ';';
 
