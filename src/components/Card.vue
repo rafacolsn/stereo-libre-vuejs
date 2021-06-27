@@ -2,7 +2,7 @@
   <div class="card">
     <div class="tag" :style="'background:' + color">{{ tag }}</div>
     <div class="img_wrapper">
-      <img :src="image.guid.rendered" :style="hoverStyle" alt="" class="image">
+      <img :src="image.guid.rendered" :style="hoverStyle" :alt="post.title.rendered" class="image">
     </div>
     <h4 :style="'color:' + color" v-html="(post.title.rendered).toUpperCase()"></h4>
     <div class="postData">{{ postData }}</div>
@@ -76,7 +76,12 @@ export default {
   position: relative;
   text-align: left;
 }
-
+h4 {
+  margin-top: 1rem;
+}
+.postData {
+  margin-bottom: 1rem;
+}
 .tag {
   position: absolute;
   top: 3rem;

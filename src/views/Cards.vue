@@ -1,12 +1,25 @@
 <template>
-  <div class="content">
+  <div>
     <div class="card-header">
       <h4>NOS PODCASTS</h4>
       <p><a @click="showModal = true">S'abonner</a></p>
       <Modal v-if="showModal" v-on:modalEvent="choosePlatform"></Modal>
     </div>
-    <div class="cards" v-if="! loading">
-      <Card v-for="post in lastPostByCategories" :key="post.id" :post="post"></Card>
+    <div class="filter">
+      <select @change="filterCat" class="select" name="filter" id="filter">
+        <option value="0" class="option">FAIS TON CHOIX</option>
+        <option class="option" :key="cat.id" v-for="cat in filteredCategories" :value="cat.id">
+          {{ cat.name.toUpperCase() }}
+        </option>
+        <option class="option" value="4">UN PEU DE TOUT...</option>
+      </select>
+    </div>
+    <div v-if="loading" class="loading">
+      Un moment svp, ça arrive... :)
+      <pulse-loader color="#E09900"></pulse-loader>
+    </div>
+    <div class="cards" v-if="!loading">
+      <Card v-for="post in posts" :key="post.id" :post="post"></Card>
     </div>
   </div>
 </template>
@@ -15,6 +28,7 @@
 import Card from '@/components/Card';
 import Modal from '@/components/Modal'
 import {mapState, mapGetters} from 'vuex';
+import PulseLoader from 'vue-spinner/src/PulseLoader.vue'
 
 export default {
   name: "Cards",
@@ -24,8 +38,8 @@ export default {
     }
   },
   computed: {
-    ...mapState("post", ["loading", "posts", "categories", "lastPostByCategories"]),
-    ...mapGetters("post", ["categoriesIds"]),
+    ...mapState("post", ["loading", "posts"]),
+    ...mapGetters("post", ["filteredCategories"]),
   },
   methods: {
     choosePlatform(event) {
@@ -37,43 +51,34 @@ export default {
           this.showModal = false
 
       }
+    },
+    async filterCat(e) {
+      let id = e.target.value;
+      if (id === '0') {
+        await this.$store.dispatch("post/getOnePostPerCategories");
+      } else {
+        await this.$store.dispatch('post/switchFilteredPosts', id);
+      }
     }
   },
-  created() {
-    this.categoriesIds.map(id => {
-      this.$store.dispatch("post/getOnePostByCategoryId", id);
-    })
-    this.$store.dispatch("post/getPosts");
-    this.$store.dispatch("post/getCategories");
+  beforeDestroy() {
+    this.$store.commit('post/resetLastPostByCategories')
+    this.$store.commit('post/resetPostsByCategories')
+  },
+  async created() {
+    await this.$store.dispatch("post/getCategories");
+    await this.$store.dispatch("post/getOnePostPerCategories");
   },
   components: {
     Card,
-    Modal
+    Modal,
+    PulseLoader
   }
 }
 </script>
 
 <style scoped>
-.content {
-  /*margin from header*/
-  margin: 35rem auto 0;
-  width: 80%;
-}
 
-.card-header {
-  background: black;
-  color: white;
-  min-height: 10rem;
-  display: flex;
-  flex-direction: column;
-  justify-content: center;
-  align-items: center;
-}
-
-.card-header h4 {
-  font-size: 2rem;
-  margin-bottom: 0;
-}
 
 .cards {
   background: #E3E3E3;
@@ -81,5 +86,29 @@ export default {
   flex-flow: wrap;
   /*border: 2px solid blue;*/
   justify-content: center;
+}
+
+.filter {
+  background: #E3E3E3;
+  text-align: right;
+  padding-right: 1rem;
+}
+
+.select {
+  border: 0;
+  background: #E3E3E3;
+}
+
+.option {
+  background: #242424;
+  color: #E3E3E3;
+}
+
+.loading {
+  background: #E3E3E3;
+  padding: 5rem 0;
+  font-size: 3rem;
+  color: #828282;
+  font-family: 'Source Sans Pro', 'Helvetica Neue', Arial, sans-serif
 }
 </style>

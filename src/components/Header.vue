@@ -22,6 +22,7 @@ export default {
 <style scoped>
 .wrapper {
   height: 100%;
+  width: 100%;
   max-height: calc(100% - 10rem);
   overflow: hidden;
   position: absolute;
@@ -32,7 +33,7 @@ export default {
 }
 h1{
   font-size: 3rem;
-  margin-bottom: 4rem;
+  margin-top: 8rem;
 }
 .text {
   color: white;
@@ -46,7 +47,7 @@ h1{
   background: black;
   border-radius: 5px;
   padding: .2rem 1rem;
-  margin-top: 20rem;
+  margin-top: 19rem;
 }
 
 
