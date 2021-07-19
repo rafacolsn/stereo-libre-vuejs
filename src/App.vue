@@ -97,9 +97,10 @@ table {
 
 .content {
   /*margin from header*/
-  margin: 40rem auto 0;
+  margin: 28rem auto 0;
   width: 80%;
 }
+
 .card-header {
   background: black;
   color: white;
@@ -108,6 +109,10 @@ table {
   flex-direction: column;
   justify-content: center;
   align-items: center;
+}
+
+.pointer {
+  cursor: pointer;
 }
 
 .card-header h4 {

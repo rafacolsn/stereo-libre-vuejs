@@ -50,9 +50,9 @@ export default {
         }
     },
     actions: {
-        getEpisodes(context) {
+        async getEpisodes(context) {
             context.commit("setLoading", true)
-            fetch('https://stereolibre.be/wp-json/wp/v2/posts/?categories=4&per_page=100').then(resp => {
+            return await fetch('https://stereolibre.be/wp-json/wp/v2/posts/?categories=4&per_page=100').then(resp => {
                 resp.json().then(r => {
                     context.commit("setPosts", r)
                     context.commit("setLoading", false)
@@ -65,19 +65,18 @@ export default {
             context.dispatch("getPostsByCategoryId", id)
             context.commit("setLoading", false)
         },
-        getOnePostByCategoryId(context, id) {
+        async getOnePostByCategoryId(context, id) {
             context.commit("setLoading", true)
-            fetch(`https://stereolibre.be/wp-json/wp/v2/posts/?categories=${id}&per_page=1`).then(resp => {
+            await fetch(`https://stereolibre.be/wp-json/wp/v2/posts/?categories=${id}&per_page=1`).then(resp => {
                 resp.json().then(r => {
                     context.commit("setLastPostByCategories", r[0])
                     context.commit("setLoading", false)
                 })
             })
-
         },
-        getPostsByCategoryId(context, id) {
+        async getPostsByCategoryId(context, id) {
             context.commit("setLoading", true)
-            fetch(`https://stereolibre.be/wp-json/wp/v2/posts/?categories=${id}&per_page=48`).then(resp => {
+            return await fetch(`https://stereolibre.be/wp-json/wp/v2/posts/?categories=${id}&per_page=48`).then(resp => {
                 resp.json().then(r => {
                     context.commit("setPostsByCategories", r)
                     context.commit('setPosts', context.state.postsByCategories);
@@ -86,22 +85,20 @@ export default {
             })
 
         },
-        getCategories(context) {
-            context.commit("setLoading", true)
-            fetch("https://stereolibre.be/wp-json/wp/v2/categories?per_page=100").then(resp => {
-                resp.json().then(r => {
-                    context.commit('setCategories', r)
-                })
-            })
-            context.commit("setLoading", false)
+        async getCategories(context) {
+            let response = await fetch("https://stereolibre.be/wp-json/wp/v2/categories?per_page=100");
+            context.commit('setCategories', await response.json())
         },
-        getOnePostPerCategories(context) {
+        async getOnePostPerCategories(context) {
             context.commit('resetLastPostByCategories');
             context.commit("setLoading", true)
-            context.getters.filteredCategories.map(cat => context.dispatch("getOnePostByCategoryId", cat.id))
-            context.state.lastPostByCategories = context.state.lastPostByCategories.sort((a, b) => {
-                return a.date - b.date
-            })
+            if (context.state.categories.length < 1) {
+                console.log('hello')
+                await context.dispatch("getCategories");
+            }
+
+            let categories = context.state.categories.filter(cat => ! [1, 4, 25].includes(cat.id));
+            categories.forEach(cat => context.dispatch("getOnePostByCategoryId", cat.id))
             context.commit('setPosts', context.state.lastPostByCategories)
             context.commit("setLoading", false)
         },

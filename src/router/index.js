@@ -10,9 +10,14 @@ const router = new VueRouter({
     base: "/",
     routes: [
         {
+            path: '/',
+            name: '',
+            redirect: 'home'
+        },
+        {
             path: '/home',
             name: 'home',
-            component: Cards
+            component: Cards,
         },
         {
             path: '/episodes',

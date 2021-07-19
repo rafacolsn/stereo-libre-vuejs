@@ -2,14 +2,10 @@
   <div class="wrapper">
     <div class="modal">
       <div class="close" @click="close()">X</div>
-      <ul class="content">
-
-          <li  v-for="(platform, index) in platforms" :key="index" @click="onClick(choice.value)"><a :href="platform.url" target="_blank"><img
+      <ul class="main">
+          <li  v-for="(platform, index) in platforms" :key="index"><a :href="platform.url" target="_blank"><img
               :src="require(`@/assets/${platform.label}.png`)" :alt="platform.label"/>{{ platform.label }}</a>
           </li>
-
-
-
       </ul>
     </div>
   </div>
@@ -73,8 +69,8 @@ export default {
     align-items: center;
     justify-content: center;
     background: #fff;
-    padding: 25px;
-    width: 30%;
+    padding: 25px 25px 25px 55px;
+    min-width: 30%;
     border-radius: 5px;
     box-shadow: 0 0 4px 0 rgba(0, 0, 0, 0.5);
 
@@ -82,14 +78,14 @@ export default {
       font-weight: bold;
       position: absolute;
       color: white;
-      background: #0a0a0a;
+      background: #343434;
       border-radius: 50%;
       padding: 4px 12px;
       top: -10px;
       right: -10px;
     }
 
-    .content {
+    .main {
       list-style: none;
       text-align: left;
       padding-left: 0;
@@ -99,6 +95,9 @@ export default {
         margin: 0 0 20px 0;
         padding-bottom: 20px;
         border-bottom: 1px solid #f7f7f7;
+        &:first-child {
+          margin-top: 10px
+        }
         &:last-child {
           margin-bottom: 0;
         }
@@ -109,7 +108,7 @@ export default {
         img {
           display: inline-block;
           vertical-align: middle;
-          margin-right: 20px;
+          margin-right: 30px;
           height: 32px;
           width: 32px;
         }

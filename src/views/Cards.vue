@@ -2,7 +2,7 @@
   <div>
     <div class="card-header">
       <h4>NOS PODCASTS</h4>
-      <p><a @click="showModal = true">S'abonner</a></p>
+      <p><a class="pointer" @click="showModal = true">S'abonner</a></p>
       <Modal v-if="showModal" v-on:modalEvent="choosePlatform"></Modal>
     </div>
     <div class="filter">
@@ -19,7 +19,7 @@
       <pulse-loader color="#E09900"></pulse-loader>
     </div>
     <div class="cards" v-if="!loading">
-      <Card v-for="post in posts" :key="post.id" :post="post"></Card>
+      <Card v-for="post in podcast" :key="post.id" :post="post"></Card>
     </div>
   </div>
 </template>
@@ -40,6 +40,12 @@ export default {
   computed: {
     ...mapState("post", ["loading", "posts"]),
     ...mapGetters("post", ["filteredCategories"]),
+    podcast() {
+      // eslint-disable-next-line vue/no-side-effects-in-computed-properties
+      return this.posts.sort((a, b) => {
+        return new Date(b.date.valueOf()) - new Date(a.date.valueOf())
+      })
+    }
   },
   methods: {
     choosePlatform(event) {
@@ -66,7 +72,6 @@ export default {
     this.$store.commit('post/resetPostsByCategories')
   },
   async created() {
-    await this.$store.dispatch("post/getCategories");
     await this.$store.dispatch("post/getOnePostPerCategories");
   },
   components: {
@@ -78,7 +83,6 @@ export default {
 </script>
 
 <style scoped>
-
 
 .cards {
   background: #E3E3E3;
