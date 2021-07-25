@@ -2,9 +2,13 @@ const getDefaultState = () => {
     return {
         loading: false,
         filtered: false,
-        posts: [],
         post: {},
         image: {},
+        category: {
+            name: null
+        },
+        color: null,
+        posts: [],
         categories: [],
         colors: [
             {4: '#899499'}, // episodes
@@ -39,6 +43,12 @@ export default {
         setImage(state, value) {
             state.image = value;
         },
+        setCategory(state, value) {
+            state.category = value;
+        },
+        setColor(state, value) {
+            state.color = value;
+        },
         setPosts(state, value) {
             state.posts = value;
         },
@@ -67,6 +77,11 @@ export default {
                     fetch(`https://stereolibre.be/wp-json/wp/v2/media/${context.state.post.featured_media}`).then(resp => {
                         resp.json().then(r => {
                             context.commit("setImage", r)
+                            let id = 4;
+                            // a post has 2 categories, has we don't want the 4th (Episodes)
+                            id = context.state.post.categories.find(id => id !== 4);
+                            context.commit('setCategory', context.getters.getCategoryById(id))
+                            context.commit('setColor', context.getters.getColorById(id)[id]);
                             context.commit("setLoading", false)
                         })
                     })

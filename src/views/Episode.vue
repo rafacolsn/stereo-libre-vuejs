@@ -1,16 +1,16 @@
 <template>
-  <div v-if="! loading" class="wrapper">
+  <div class="wrapper">
     <div class="card-header">
       <h4 v-html="post.title.rendered"></h4>
       <p class="postData">{{ postData }}</p>
       <div class="navigation">
-        <a :href="'/episode/' + getNext" v-html="'<'"></a>
-        <a :href="'/episode/' + getPrev" v-html="'>'"></a>
+        <router-link :to="'/episode/' + getNext" v-html="'<'"></router-link>
+        <router-link :to="'/episode/' + getPrev" v-html="'>'"></router-link>
       </div>
     </div>
-    <div class="tag" :style="'background:' + color"><a href="">{{ tag }}</a></div>
+    <div class="tag" :style="'background:' + color +';'"><a href="">{{ tag }}</a></div>
     <div class="data">
-      <div class="img_wrapper">
+      <div v-if="! loading" class="img_wrapper">
         <img :src="image.guid.rendered" :alt="post.title.rendered" class="image">
       </div>
       <div class="text" v-html="post.content.rendered"></div>
@@ -24,16 +24,8 @@ import moment from "moment";
 
 export default {
   name: "Episode",
-  data: () => {
-    return {
-      category: {
-        name: null
-      },
-      color: null
-    }
-  },
   computed: {
-    ...mapState('post', ['post', 'image', 'loading']),
+    ...mapState('post', ['post', 'image', 'category', 'color', 'loading']),
     ...mapGetters('post', ["getPostById", "getColorById", "getCategoryById", "episodesIds"]),
     postData() {
       return moment(this.post.date).format('DD MMMM YYYY')
@@ -44,7 +36,7 @@ export default {
     getPrev() {
       let prevItem = this.$route.params.id;
       let index = this.episodesIds.indexOf(parseInt(this.$route.params.id));
-      if(index > 0 && index < this.episodesIds.length - 1) {
+      if (index > 0 && index < this.episodesIds.length - 1) {
         prevItem = this.episodesIds[index - 1]
       }
       return prevItem
@@ -52,19 +44,20 @@ export default {
     getNext() {
       let nextItem = this.$route.params.id;
       let index = this.episodesIds.indexOf(parseInt(this.$route.params.id));
-      if(index >= 0 && index < this.episodesIds.length - 1) {
+      if (index >= 0 && index < this.episodesIds.length - 1) {
         nextItem = this.episodesIds[index + 1]
       }
       return nextItem
     }
 
   },
-  async mounted() {
-    await this.$store.dispatch('post/getEpisode', parseInt(this.$route.params.id))
-    let id = 4;
-    id = this.post.categories.find(id => id !== 4); // a post has 2 categories, has we don't want the 4th (Episodes)
-    this.category = this.getCategoryById(id)
-    this.color = this.getColorById(id)[id] + ';';
+  async created() {
+    await this.$store.dispatch('post/getEpisode', parseInt(this.$route.params.id));
+  },
+  watch: {
+    async $route(to) {
+      await this.$store.dispatch('post/getEpisode', parseInt(to.params.id));
+    }
   },
 }
 </script>
@@ -127,10 +120,9 @@ h4 {
   left: 0;
   padding: .3rem 1rem .3rem .5rem;
   border-radius: 0 5px 5px 0;
-
-  a {
-    color: white;
-  }
 }
 
+a {
+  color: white;
+}
 </style>

@@ -116,6 +116,7 @@ table {
 
 .pointer {
   cursor: pointer;
+  color: white;
 }
 
 .card-header h4 {

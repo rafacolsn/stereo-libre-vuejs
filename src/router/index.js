@@ -28,7 +28,7 @@ const router = new VueRouter({
         {
             path: '/episode/:id',
             name: 'episode',
-            component: Episode
+            component: Episode,
         },
     ]
 })
