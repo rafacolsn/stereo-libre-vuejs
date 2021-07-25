@@ -11,7 +11,7 @@
         <option class="option" :key="cat.id" v-for="cat in filteredCategories" :value="cat.id">
           {{ cat.name.toUpperCase() }}
         </option>
-        <option class="option" value="4">UN PEU DE TOUT...</option>
+<!--        <option class="option" value="4">UN PEU DE TOUT...</option>-->
       </select>
     </div>
     <div v-if="loading" class="loading">

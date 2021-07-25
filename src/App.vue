@@ -78,7 +78,10 @@ q:before, q:after {
   content: '';
   content: none;
 }
-
+a, a:hover, a:active {
+  text-decoration: none;
+  color: #555555;
+}
 table {
   border-collapse: collapse;
   border-spacing: 0;

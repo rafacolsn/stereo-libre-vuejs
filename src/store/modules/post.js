@@ -3,16 +3,19 @@ const getDefaultState = () => {
         loading: false,
         filtered: false,
         posts: [],
+        post: {},
+        image: {},
         categories: [],
         colors: [
+            {4: '#899499'}, // episodes
             {10: '#008BE2'}, // artistes
             {15: '#846700'}, // courant musical
             {9: '#E09900'}, // Découvertes
             {7: '#0C71C3'}, // Instruments
             {17: '#8300E9'}, // Labels
             {8: '#FFE121'}, // Live
-            {12: '#177319'}, // Thème
-            {11: '#5d5d4b'}, // Vintage
+            {12: '#1d8920'}, // Thème
+            {11: '#af3832'}, // Vintage
             {16: '#d650d0'} // Voyages
         ],
         lastPostByCategories: [],
@@ -29,6 +32,12 @@ export default {
         },
         setFiltered(state, value) {
             state.filtered = value;
+        },
+        setPost(state, value) {
+            state.post = value;
+        },
+        setImage(state, value) {
+            state.image = value;
         },
         setPosts(state, value) {
             state.posts = value;
@@ -50,6 +59,22 @@ export default {
         }
     },
     actions: {
+        async getEpisode(context, id) {
+            context.commit("setLoading", true)
+            await fetch(`https://stereolibre.be/wp-json/wp/v2/posts/${id}`).then(resp => {
+                resp.json().then(r => {
+                    context.commit("setPost", r)
+                    fetch(`https://stereolibre.be/wp-json/wp/v2/media/${context.state.post.featured_media}`).then(resp => {
+                        resp.json().then(r => {
+                            context.commit("setImage", r)
+                            context.commit("setLoading", false)
+                        })
+                    })
+                })
+            })
+
+
+        },
         async getEpisodes(context) {
             context.commit("setLoading", true)
             return await fetch('https://stereolibre.be/wp-json/wp/v2/posts/?categories=4&per_page=100').then(resp => {
@@ -93,7 +118,6 @@ export default {
             context.commit('resetLastPostByCategories');
             context.commit("setLoading", true)
             if (context.state.categories.length < 1) {
-                console.log('hello')
                 await context.dispatch("getCategories");
             }
 
@@ -104,6 +128,9 @@ export default {
         },
     },
     getters: {
+        getPostById: (state) => (id) => {
+            return state.posts.find(post => post.id === id)
+        },
         getCategoryById: (state) => (id) => {
             return state.categories.find(category => category.id === id)
         },

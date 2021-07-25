@@ -1,9 +1,9 @@
 <template>
-  <router-link :to="post.link.slice(23)">
+  <router-link :to="'/episode/'+post.id">
     <div class="card">
-      <div class="tag" :style="'background:' + color">{{ tag }}</div>
+      <div class="tag" :style="'background:' + color"><a href="">{{ tag }}</a></div>
       <div class="img_wrapper">
-        <img :src="image.guid.rendered" :style="hoverStyle" :alt="post.title.rendered" class="image">
+        <img :src="image.guid.rendered" :alt="post.title.rendered" class="image">
       </div>
       <h4 :style="'color:' + color" v-html="(post.title.rendered).toUpperCase()"></h4>
       <div class="postData">{{ postData }}</div>
@@ -45,14 +45,9 @@ export default {
     tag() {
       return (this.category.name).toUpperCase()
     },
-    hoverStyle() {
-      return {
-        '--color': this.color
-      }
-    }
   },
   created() {
-    const id = this.post.categories.find(id => id !== 4); // we don't want the 4th : Episodes
+    const id = this.post.categories.find(id => id !== 4); // a post has 2 categories, has we don't want the 4th (Episodes)
     this.category = this.getCategoryById(id)
     this.color = this.getColorById(id)[id] + ';';
 
@@ -78,19 +73,25 @@ export default {
   position: relative;
   text-align: left;
 }
+
 h4 {
   margin-top: 1rem;
 }
+
 .postData {
   margin-bottom: 1rem;
 }
+
 .tag {
   position: absolute;
   top: 3rem;
   left: 0;
-  color: white;
   padding: .3rem 1rem .3rem 2rem;
   border-radius: 0 5px 5px 0;
+
+  a {
+    color: white;
+  }
 }
 
 .img_wrapper {
@@ -105,6 +106,5 @@ h4 {
   max-width: 100%;
   //min-height: 100%;
   max-height: 100%;
-
 }
 </style>

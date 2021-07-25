@@ -2,10 +2,10 @@
   <nav>
     <ul>
       <li class="zoom">
-        <router-link to="home">STEREO LIBRE</router-link>
+        <router-link to="/home">STEREO LIBRE</router-link>
       </li>
       <li class="zoom">
-        <router-link to="episodes">EPISODES</router-link>
+        <router-link to="/episodes">EPISODES</router-link>
       </li>
     </ul>
   </nav>
