@@ -7,18 +7,33 @@
     <div class="list" v-for="post in posts" :key="post.id">
       <router-link :to="'/episode/'+post.id">
         <p v-html="(post.title.rendered).toUpperCase()"></p>
+        <p style="color: #828282; font-size: small">{{ format(post.date) }} |
+          <router-link :to="'/category/'+getCategory(post.categories.find(id => id !== 4)).id">
+            {{ getCategory(post.categories.find(id => id !== 4)).name }}
+          </router-link>
+        </p>
       </router-link>
     </div>
   </div>
 </template>
 
 <script>
-import {mapState} from "vuex";
+import {mapGetters, mapState} from "vuex";
+import moment from "moment";
 
 export default {
   name: "Episodes",
   computed: {
-    ...mapState('post', ['posts'])
+    ...mapState('post', ['posts']),
+    ...mapGetters('post', ["getCategoryById"])
+  },
+  methods: {
+    format(date) {
+      return moment(date).format('DD MMMM YYYY')
+    },
+    getCategory(id) {
+      return this.getCategoryById(id)
+    }
   },
   created() {
     this.$store.dispatch('post/getEpisodes')

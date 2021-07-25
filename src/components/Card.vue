@@ -1,7 +1,9 @@
 <template>
   <router-link :to="'/episode/'+post.id">
     <div class="card">
-      <div class="tag" :style="'background:' + color"><a href="">{{ tag }}</a></div>
+      <div class="tag" :style="'background:' + color">
+        <router-link :to="'/category/'+category.id">{{ tag }}</router-link>
+      </div>
       <div class="img_wrapper">
         <img :src="image.guid.rendered" :alt="post.title.rendered" class="image">
       </div>

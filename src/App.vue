@@ -78,10 +78,12 @@ q:before, q:after {
   content: '';
   content: none;
 }
+
 a, a:hover, a:active {
   text-decoration: none;
   color: #555555;
 }
+
 table {
   border-collapse: collapse;
   border-spacing: 0;
@@ -106,17 +108,36 @@ table {
 
 .card-header {
   background: black;
+  border-radius: 10px 10px 0 0;
   color: white;
   min-height: 10rem;
   display: flex;
   flex-direction: column;
   justify-content: center;
-  align-items: center;
+}
+
+.navigation {
+  display: flex;
+  justify-content: space-between;
+  margin: 0 1rem;
+}
+
+.navigation a {
+  color: white;
 }
 
 .pointer {
   cursor: pointer;
   color: white;
+}
+
+.cards {
+  background: #E3E3E3;
+  border-radius: 0 0 10px 10px;
+  display: flex;
+  flex-flow: wrap;
+  /*border: 2px solid blue;*/
+  justify-content: center;
 }
 
 .card-header h4 {

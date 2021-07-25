@@ -5,15 +5,14 @@
       <p><a class="pointer" @click="showModal = true">S'abonner</a></p>
       <Modal v-if="showModal" v-on:modalEvent="choosePlatform"></Modal>
     </div>
-    <div class="filter">
-      <select @change="filterCat" class="select" name="filter" id="filter">
-        <option value="0" class="option">FAIS TON CHOIX</option>
-        <option class="option" :key="cat.id" v-for="cat in filteredCategories" :value="cat.id">
-          {{ cat.name.toUpperCase() }}
-        </option>
-<!--        <option class="option" value="4">UN PEU DE TOUT...</option>-->
-      </select>
-    </div>
+<!--    <div class="filter">-->
+<!--      <select @change="filterCat" class="select" name="filter" id="filter">-->
+<!--        <option value="0" class="option">FAIS TON CHOIX</option>-->
+<!--        <option class="option" :key="cat.id" v-for="cat in filteredCategories" :value="cat.id">-->
+<!--          {{ cat.name.toUpperCase() }}-->
+<!--        </option>-->
+<!--      </select>-->
+<!--    </div>-->
     <div v-if="loading" class="loading">
       Un moment svp, ça arrive... :)
       <pulse-loader color="#E09900"></pulse-loader>
@@ -83,14 +82,6 @@ export default {
 </script>
 
 <style scoped>
-
-.cards {
-  background: #E3E3E3;
-  display: flex;
-  flex-flow: wrap;
-  /*border: 2px solid blue;*/
-  justify-content: center;
-}
 
 .filter {
   background: #E3E3E3;

@@ -156,8 +156,5 @@ export default {
             // 1 = uncategorized, 4 = episodes, 25 = trailer
             return state.categories.filter(cat => ! [1, 4, 25].includes(cat.id))
         },
-        episodesIds(state) {
-            return state.posts.map(ep => ep.id);
-        }
     }
 }

@@ -1,14 +1,14 @@
 <template>
   <div class="wrapper">
     <div class="card-header">
-      <h4 v-html="post.title.rendered"></h4>
+      <h4 v-html="post.title.rendered.toUpperCase()"></h4>
       <p class="postData">{{ postData }}</p>
       <div class="navigation">
-        <router-link :to="'/episode/' + getNext" v-html="'<'"></router-link>
-        <router-link :to="'/episode/' + getPrev" v-html="'>'"></router-link>
+        <router-link :to="'/episode/' + getPrev.id" v-html="'<'"></router-link>
+        <router-link :to="'/episode/' + getNext.id" v-html="'>'"></router-link>
       </div>
     </div>
-    <div class="tag" :style="'background:' + color +';'"><a href="">{{ tag }}</a></div>
+    <div class="tag" :style="'background:' + color +';'"><router-link :to="'/category/'+category.id">{{ tag }}</router-link></div>
     <div class="data">
       <div v-if="! loading" class="img_wrapper">
         <img :src="image.guid.rendered" :alt="post.title.rendered" class="image">
@@ -25,8 +25,8 @@ import moment from "moment";
 export default {
   name: "Episode",
   computed: {
-    ...mapState('post', ['post', 'image', 'category', 'color', 'loading']),
-    ...mapGetters('post', ["getPostById", "getColorById", "getCategoryById", "episodesIds"]),
+    ...mapState('post', ['posts','post', 'image', 'category', 'color', 'loading']),
+    ...mapGetters('post', ["getPostById", "getColorById", "getCategoryById"]),
     postData() {
       return moment(this.post.date).format('DD MMMM YYYY')
     },
@@ -34,24 +34,25 @@ export default {
       return (this.category.name).toUpperCase()
     },
     getPrev() {
-      let prevItem = this.$route.params.id;
-      let index = this.episodesIds.indexOf(parseInt(this.$route.params.id));
-      if (index > 0 && index < this.episodesIds.length - 1) {
-        prevItem = this.episodesIds[index - 1]
+      let index = this.posts.map(post => post.id).indexOf(this.post.id);
+      let prevItem = {};
+      if (index > 0 && index <= this.posts.length - 1) {
+        prevItem = this.posts[index - 1]
       }
       return prevItem
     },
     getNext() {
-      let nextItem = this.$route.params.id;
-      let index = this.episodesIds.indexOf(parseInt(this.$route.params.id));
-      if (index >= 0 && index < this.episodesIds.length - 1) {
-        nextItem = this.episodesIds[index + 1]
+      let index = this.posts.map(post => post.id).indexOf(this.post.id);
+      let nextItem = {};
+      if (index >= 0 && index < this.posts.length - 1) {
+        nextItem = this.posts[index + 1]
       }
       return nextItem
     }
 
   },
   async created() {
+    await this.$store.dispatch('post/getEpisodes');
     await this.$store.dispatch('post/getEpisode', parseInt(this.$route.params.id));
   },
   watch: {
@@ -67,16 +68,9 @@ export default {
   position: relative;
 }
 
-.navigation {
-  display: flex;
-  justify-content: space-between;
-  margin: 0 1rem;
-}
 
 .card-header {
-  border-radius: 10px 10px 0 0;
   padding-top: 1rem;
-  align-items: unset;
 }
 
 h4 {
