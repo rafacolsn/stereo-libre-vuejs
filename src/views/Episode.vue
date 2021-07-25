@@ -3,6 +3,10 @@
     <div class="card-header">
       <h4 v-html="post.title.rendered"></h4>
       <p class="postData">{{ postData }}</p>
+      <div class="navigation">
+        <a :href="'/episode/' + getNext" v-html="'<'"></a>
+        <a :href="'/episode/' + getPrev" v-html="'>'"></a>
+      </div>
     </div>
     <div class="tag" :style="'background:' + color"><a href="">{{ tag }}</a></div>
     <div class="data">
@@ -30,15 +34,32 @@ export default {
   },
   computed: {
     ...mapState('post', ['post', 'image', 'loading']),
-    ...mapGetters('post', ["getPostById", "getColorById", "getCategoryById"]),
+    ...mapGetters('post', ["getPostById", "getColorById", "getCategoryById", "episodesIds"]),
     postData() {
       return moment(this.post.date).format('DD MMMM YYYY')
     },
     tag() {
       return (this.category.name).toUpperCase()
     },
+    getPrev() {
+      let prevItem = this.$route.params.id;
+      let index = this.episodesIds.indexOf(parseInt(this.$route.params.id));
+      if(index > 0 && index < this.episodesIds.length - 1) {
+        prevItem = this.episodesIds[index - 1]
+      }
+      return prevItem
+    },
+    getNext() {
+      let nextItem = this.$route.params.id;
+      let index = this.episodesIds.indexOf(parseInt(this.$route.params.id));
+      if(index >= 0 && index < this.episodesIds.length - 1) {
+        nextItem = this.episodesIds[index + 1]
+      }
+      return nextItem
+    }
+
   },
-  async created() {
+  async mounted() {
     await this.$store.dispatch('post/getEpisode', parseInt(this.$route.params.id))
     let id = 4;
     id = this.post.categories.find(id => id !== 4); // a post has 2 categories, has we don't want the 4th (Episodes)
@@ -53,14 +74,22 @@ export default {
   position: relative;
 }
 
+.navigation {
+  display: flex;
+  justify-content: space-between;
+  margin: 0 1rem;
+}
+
 .card-header {
   border-radius: 10px 10px 0 0;
   padding-top: 1rem;
+  align-items: unset;
 }
 
 h4 {
   margin: 0 1rem;
 }
+
 .text {
   text-align: left;
   padding: 1rem;
@@ -69,6 +98,7 @@ h4 {
   overflow-y: auto;
   max-height: 18rem;
 }
+
 ::v-deep .powerpress_player {
   margin-top: 2rem;
 }
