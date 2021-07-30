@@ -1,12 +1,14 @@
 <template>
-  <div class="wrapper">
+  <div class="content wrapper">
     <div class="card-header">
       <h4 v-html="post.title.rendered.toUpperCase()"></h4>
       <p class="postData">{{ postData }}</p>
       <div class="navigation">
         <div v-if="!getPrev.id">&nbsp;</div>
-        <router-link v-if="getPrev.id" :to="'/episode/' + getPrev.id">&lt;&nbsp;<span v-html="getPrev.title.rendered"></span></router-link>
-        <router-link v-if="getNext.id" :to="'/episode/' + getNext.id"><span v-html="getNext.title.rendered"></span>&nbsp;&gt;</router-link>
+        <router-link v-if="getPrev.id" :to="'/episode/' + getPrev.id">&lt;&nbsp;<span
+            v-html="getPrev.title.rendered"></span></router-link>
+        <router-link v-if="getNext.id" :to="'/episode/' + getNext.id"><span v-html="getNext.title.rendered"></span>&nbsp;&gt;
+        </router-link>
       </div>
     </div>
     <div class="tag" :style="'background:' + color +';'">
@@ -76,6 +78,11 @@ export default {
   position: relative;
 }
 
+@media screen and (max-width: 992px) {
+  .content {
+    width: 90%;
+  }
+}
 
 .card-header {
   padding-top: 1rem;
@@ -93,6 +100,12 @@ h4 {
   overflow-y: auto;
   max-height: 18rem;
   flex: auto;
+}
+
+@media screen and (max-width: 576px) {
+  .text {
+    max-height: fit-content;
+  }
 }
 
 ::v-deep .powerpress_player {
@@ -114,20 +127,19 @@ h4 {
 
 .data {
   display: flex;
-
   overflow: hidden;
   border-radius: 0 0 10px 10px;
 }
 
-.tag {
-  position: absolute;
-  top: 1rem;
-  left: 0;
-  padding: .3rem 1rem .3rem .5rem;
-  border-radius: 0 5px 5px 0;
+@media screen and (max-width: 576px) {
+  .data {
+    flex-direction: column;
+  }
 }
 
-a {
-  color: white;
+.tag {
+  top: 1rem;
+  padding: .3rem 1rem .3rem .5rem;
 }
+
 </style>

@@ -1,5 +1,5 @@
 <template>
-  <div>
+  <div class="content">
     <div class="card-header">
       <h4>EPISODES</h4>
       <p>Et encore il n'y a pas tout :)</p>

@@ -1,5 +1,5 @@
 <template>
-  <div>
+  <div class="content">
     <div class="card-header" :style="'border-bottom: 1rem solid ' + color">
       <h4>{{ category.name.toUpperCase() }}</h4>
       <div class="navigation">

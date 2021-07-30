@@ -1,5 +1,5 @@
 <template>
-  <div>
+  <div class="content">
     <div class="card-header">
       <h4>NOS PODCASTS</h4>
       <p><a class="pointer" @click="showModal = true">S'abonner</a></p>

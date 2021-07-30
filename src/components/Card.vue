@@ -85,18 +85,6 @@ h4 {
   margin-bottom: 1rem;
 }
 
-.tag {
-  position: absolute;
-  top: 3rem;
-  left: 0;
-  padding: .3rem 1rem .3rem 2rem;
-  border-radius: 0 5px 5px 0;
-
-  a {
-    color: white;
-  }
-}
-
 .img_wrapper {
   max-height: 15rem;
   width: 20rem;

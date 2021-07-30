@@ -2,8 +2,7 @@
   <div id="app">
     <Menu></Menu>
     <Header></Header>
-    <h1>Stéréo Libre</h1>
-    <div class="content">
+    <div>
       <router-view></router-view>
     </div>
     <footer class="footer">{{ footer }}</footer>
@@ -32,7 +31,7 @@ export default {
 }
 </script>
 
-<style>
+<style lang="scss">
 /*reset css*/
 html, body, div, span, applet, object, iframe,
 h1, h2, h3, h4, h5, h6, p, blockquote, pre,
@@ -101,7 +100,7 @@ table {
 
 .content {
   /*margin from header*/
-  margin: 28rem auto 0;
+  margin: 3rem auto 0;
   width: 80%;
 }
 
@@ -121,8 +120,46 @@ table {
   margin: 0 1rem;
 }
 
+@media screen and (max-width: 992px) {
+  .content {
+    width: 100%;
+  }
+
+  .navigation {
+    flex-direction: column;
+  }
+}
+
 .navigation a {
-  color: white;
+  color: #d3d3d3;
+
+  &:hover {
+    color: white;
+  }
+}
+
+.tag {
+  position: absolute;
+  top: 3rem;
+  left: 0;
+  padding: .3rem 1rem .3rem 2rem;
+  border-radius: 0 5px 5px 0;
+
+  a {
+    color: white;
+
+    &:hover {
+      color: black;
+    }
+  }
+}
+
+.zoom {
+  transition: all .2s ease-in-out;
+}
+
+.zoom:hover {
+  transform: scale(1.1);
 }
 
 .pointer {
