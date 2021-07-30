@@ -7,6 +7,9 @@
       <li class="zoom">
         <router-link to="/episodes">EPISODES</router-link>
       </li>
+      <li class="zoom">
+        <router-link to="/nous">NOUS</router-link>
+      </li>
     </ul>
   </nav>
 </template>
