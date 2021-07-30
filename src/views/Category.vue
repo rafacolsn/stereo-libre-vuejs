@@ -1,6 +1,6 @@
 <template>
   <div>
-    <div class="card-header" :style="'background-color: ' + color">
+    <div class="card-header" :style="'border-bottom: 1rem solid ' + color">
       <h4>{{ category.name.toUpperCase() }}</h4>
       <div class="navigation">
         <div v-if="!getPrev.id">&nbsp;</div>
@@ -75,5 +75,7 @@ export default {
 </script>
 
 <style scoped>
-
+.card-header {
+  min-height: 9rem;
+}
 </style>

@@ -5,7 +5,7 @@
         <router-link :to="'/category/'+category.id">{{ tag }}</router-link>
       </div>
       <div class="img_wrapper">
-        <img :src="image.guid.rendered" :alt="post.title.rendered" class="image">
+        <img v-if="image" :src="imageUrl" :alt="post.title.rendered" class="image">
       </div>
       <h4 :style="'color:' + color" v-html="(post.title.rendered).toUpperCase()"></h4>
       <div class="postData">{{ postData }}</div>
@@ -28,11 +28,7 @@ export default {
   },
   data() {
     return {
-      image: {
-        guid: {
-          rendered: null
-        }
-      },
+      image: {},
       category: {
         name: null
       },
@@ -46,6 +42,11 @@ export default {
     },
     tag() {
       return (this.category.name).toUpperCase()
+    },
+    imageUrl() {
+      return this.image.media_details.sizes.medium_large ?
+          this.image.media_details.sizes.medium_large.source_url :
+          this.image.media_details.sizes.full.source_url
     },
   },
   created() {

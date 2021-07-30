@@ -31,15 +31,12 @@ export default {
   /*background: #05822E;*/
   /*background-image: url("../assets/couv.jpg");*/
 }
-h1{
-  font-size: 3rem;
-  margin-top: 8rem;
-}
 .text {
   color: white;
   position: absolute;
   top: 20%;
-  left: 25%;
+  left: 50%;
+  transform: translateX(-50%);
 }
 
 .text p {
@@ -47,13 +44,17 @@ h1{
   background: black;
   border-radius: 5px;
   padding: .2rem 1rem;
-  margin-top: 19rem;
+  margin-top: 7rem;
+  width: 80%;
 }
 
+.text h1 {
+  font-size: 3rem;
+  margin-top: 8rem;
+}
 
 #header {
   width: 100%;
-  /*height: 35rem;*/
 }
 
 #logo {

@@ -4,14 +4,17 @@
       <h4 v-html="post.title.rendered.toUpperCase()"></h4>
       <p class="postData">{{ postData }}</p>
       <div class="navigation">
-        <router-link :to="'/episode/' + getPrev.id" v-html="'<'"></router-link>
-        <router-link :to="'/episode/' + getNext.id" v-html="'>'"></router-link>
+        <div v-if="!getPrev.id">&nbsp;</div>
+        <router-link v-if="getPrev.id" :to="'/episode/' + getPrev.id">&lt;&nbsp;<span v-html="getPrev.title.rendered"></span></router-link>
+        <router-link v-if="getNext.id" :to="'/episode/' + getNext.id"><span v-html="getNext.title.rendered"></span>&nbsp;&gt;</router-link>
       </div>
     </div>
-    <div class="tag" :style="'background:' + color +';'"><router-link :to="'/category/'+category.id">{{ tag }}</router-link></div>
+    <div class="tag" :style="'background:' + color +';'">
+      <router-link :to="'/category/'+category.id">{{ tag }}</router-link>
+    </div>
     <div class="data">
       <div v-if="! loading" class="img_wrapper">
-        <img :src="image.guid.rendered" :alt="post.title.rendered" class="image">
+        <img :src="imageUrl" :alt="post.title.rendered" class="image">
       </div>
       <div class="text" v-html="post.content.rendered"></div>
     </div>
@@ -25,13 +28,18 @@ import moment from "moment";
 export default {
   name: "Episode",
   computed: {
-    ...mapState('post', ['posts','post', 'image', 'category', 'color', 'loading']),
+    ...mapState('post', ['posts', 'post', 'image', 'category', 'color', 'loading']),
     ...mapGetters('post', ["getPostById", "getColorById", "getCategoryById"]),
     postData() {
       return moment(this.post.date).format('DD MMMM YYYY')
     },
     tag() {
       return (this.category.name).toUpperCase()
+    },
+    imageUrl() {
+      return this.image.media_details.sizes.medium_large ?
+          this.image.media_details.sizes.medium_large.source_url :
+          this.image.media_details.sizes.full.source_url
     },
     getPrev() {
       let index = this.posts.map(post => post.id).indexOf(this.post.id);
@@ -84,6 +92,7 @@ h4 {
   border-radius: 0 0 10px 0;
   overflow-y: auto;
   max-height: 18rem;
+  flex: auto;
 }
 
 ::v-deep .powerpress_player {
@@ -92,13 +101,15 @@ h4 {
 
 
 .img_wrapper {
-  max-height: 20rem;
-  max-width: 20rem;
+  height: 20rem;
+  background-color: #f3f3f3;
 }
 
 .image {
-  max-width: 100%;
-  min-height: 100%;
+  object-fit: contain;
+  object-position: left;
+  min-width: 20rem;
+  height: 20rem;
 }
 
 .data {

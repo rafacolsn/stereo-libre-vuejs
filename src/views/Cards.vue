@@ -5,14 +5,6 @@
       <p><a class="pointer" @click="showModal = true">S'abonner</a></p>
       <Modal v-if="showModal" v-on:modalEvent="choosePlatform"></Modal>
     </div>
-<!--    <div class="filter">-->
-<!--      <select @change="filterCat" class="select" name="filter" id="filter">-->
-<!--        <option value="0" class="option">FAIS TON CHOIX</option>-->
-<!--        <option class="option" :key="cat.id" v-for="cat in filteredCategories" :value="cat.id">-->
-<!--          {{ cat.name.toUpperCase() }}-->
-<!--        </option>-->
-<!--      </select>-->
-<!--    </div>-->
     <div v-if="loading" class="loading">
       Un moment svp, ça arrive... :)
       <pulse-loader color="#E09900"></pulse-loader>
@@ -57,14 +49,6 @@ export default {
 
       }
     },
-    async filterCat(e) {
-      let id = e.target.value;
-      if (id === '0') {
-        await this.$store.dispatch("post/getOnePostPerCategories");
-      } else {
-        await this.$store.dispatch('post/switchFilteredPosts', id);
-      }
-    }
   },
   beforeDestroy() {
     this.$store.commit('post/resetLastPostByCategories')

@@ -95,7 +95,6 @@ table {
   -moz-osx-font-smoothing: grayscale;
   text-align: center;
   color: #555555;
-  /*margin-top: 60px;*/
   line-height: 1.7;
   font-size: 16px;
 }
