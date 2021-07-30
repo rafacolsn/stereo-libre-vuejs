@@ -101,7 +101,7 @@ table {
 .content {
   /*margin from header*/
   margin: 3rem auto 0;
-  width: 80%;
+  width: 90%;
 }
 
 .card-header {
