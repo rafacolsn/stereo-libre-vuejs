@@ -70,6 +70,8 @@ li {
     flex-direction: column;
     position: absolute;
     z-index: 5555;
+    filter: drop-shadow(0 0 0.75rem #b8b8b8);
+
 
     & .subElement {
       background-color: #000000;
@@ -77,6 +79,7 @@ li {
       color: white;
       border-bottom: 1px solid white;
       font-weight: normal;
+      font-size: 15px;
       &:hover {
         opacity: 1;
       }
