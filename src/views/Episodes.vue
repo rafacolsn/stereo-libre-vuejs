@@ -8,8 +8,8 @@
       <router-link :to="'/episode/'+post.id">
         <p v-html="(post.title.rendered).toUpperCase()"></p>
         <p style="color: #828282; font-size: small">{{ format(post.date) }} |
-          <router-link :to="'/category/'+getCategory(post.categories.find(id => id !== 4)).id">
-            {{ getCategory(post.categories.find(id => id !== 4)).name }}
+          <router-link :to="'/category/'+getCategory(post).id">
+            {{ getCategory(post).name }}
           </router-link>
         </p>
       </router-link>
@@ -25,13 +25,17 @@ export default {
   name: "Episodes",
   computed: {
     ...mapState('post', ['posts']),
-    ...mapGetters('post', ["getCategoryById"])
+    ...mapGetters('post', ["getCategoryById"]),
   },
   methods: {
     format(date) {
       return moment(date).format('DD MMMM YYYY')
     },
-    getCategory(id) {
+    getCategory(post) {
+      let id = post.categories.find(id => id !== 4) === undefined ?
+          post.categories.find(id => id === 4) :
+          post.categories.find(id => id !== 4);
+
       return this.getCategoryById(id)
     }
   },

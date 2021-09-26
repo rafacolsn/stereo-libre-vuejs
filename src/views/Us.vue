@@ -45,21 +45,37 @@ export default {
 </script>
 
 <style scoped lang="scss">
+@media screen and (max-width: 850px) {
+  .flex {
+    flex-direction: column;
+  }
+  .img {
+    min-height: 16rem;
+    border-bottom-right-radius: 0;
+  }
+}
+
+@media screen and (min-width: 750px) {
+.img {
+  min-width: 30rem;
+  min-height: 20rem;
+  }
+}
+
+
 .flex {
   display: flex;
 }
 .img {
   background-image: url('../assets/IMG_5216.jpeg');
   background-size: cover;
-  background-position: center bottom;
-  min-width: 30rem;
-  min-height: 20rem;
+  background-position: center;
   border-radius: 0 0 0 10px;
 }
 .text {
   text-align: left;
   background-color: #f3f3f3;
-  border-radius: 0 0 10px 10px;
+  border-radius: 0 0 10px 0;
 }
 
 p {

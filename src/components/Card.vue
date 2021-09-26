@@ -1,6 +1,6 @@
 <template>
   <router-link :to="'/episode/'+post.id">
-    <div class="card">
+    <div v-if="! loading" class="card">
       <div class="tag" :style="'background:' + color">
         <router-link :to="'/category/'+category.id">{{ tag }}</router-link>
       </div>
@@ -28,6 +28,7 @@ export default {
   },
   data() {
     return {
+      loading: false,
       image: {},
       category: {
         name: null
@@ -50,7 +51,11 @@ export default {
     },
   },
   created() {
-    const id = this.post.categories.find(id => id !== 4); // a post has 2 categories, has we don't want the 4th (Episodes)
+    this.loading = true
+    // a post has 2 categories, we get the 4th (Episodes) only if it's the only one
+    const id = this.post.categories.find(id => id !== 4) === undefined ?
+        this.post.categories.find(id => id === 4) :
+        this.post.categories.find(id => id !== 4);
     this.category = this.getCategoryById(id)
     this.color = this.getColorById(id)[id] + ';';
 
@@ -58,6 +63,7 @@ export default {
     fetch(`https://stereolibre.be/wp-json/wp/v2/media/${this.post.featured_media}`).then(resp => {
       resp.json().then(r => {
         this.image = r
+        this.loading = false
       })
     })
   }
