@@ -60,7 +60,7 @@ export default {
     this.color = this.getColorById(id)[id] + ';';
 
 
-    fetch(`https://stereolibre.be/wp-json/wp/v2/media/${this.post.featured_media}`).then(resp => {
+    fetch(`https://admin.stereolibre.be/wp-json/wp/v2/media/${this.post.featured_media}`).then(resp => {
       resp.json().then(r => {
         this.image = r
         this.loading = false
