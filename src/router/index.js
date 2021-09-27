@@ -13,7 +13,7 @@ const router = new VueRouter({
     base: "/",
     routes: [
         {
-            path: '*',
+            path: '/',
             name: '',
             redirect: 'home'
         },
@@ -44,5 +44,5 @@ const router = new VueRouter({
         },
     ]
 })
-router.replace({ path: '*', redirect: '/' })
+// router.replace({ path: '*', redirect: '/' })
 export default router;
