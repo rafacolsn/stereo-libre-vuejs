@@ -13,6 +13,7 @@ const getDefaultState = () => {
         colors: [
             {4: '#899499'}, // episodes
             {10: '#008BE2'}, // artistes
+            {26: '#2ca88b'}, // cinéma
             {15: '#846700'}, // courant musical
             {9: '#E09900'}, // Découvertes
             {7: '#0C71C3'}, // Instruments
