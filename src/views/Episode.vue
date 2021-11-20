@@ -63,6 +63,7 @@ export default {
   },
   async created() {
     await this.$store.dispatch('post/getEpisodes');
+    await this.$store.dispatch('episodes/getRss');
     await this.$store.dispatch('post/getEpisode', parseInt(this.$route.params.id));
   },
   watch: {
