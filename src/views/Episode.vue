@@ -39,9 +39,12 @@ export default {
       return (this.category.name).toUpperCase()
     },
     imageUrl() {
-      return this.image.media_details.sizes.medium_large ?
-          this.image.media_details.sizes.medium_large.source_url :
-          this.image.media_details.sizes.full.source_url
+        return this.image.source_url;
+
+      // return this.image.media_details.sizes.medium_large ?
+      //     this.image.media_details.sizes.medium_large.source_url :
+      //     this.image.media_details.sizes.full.source_url;
+
     },
     getPrev() {
       let index = this.posts.map(post => post.id).indexOf(this.post.id);

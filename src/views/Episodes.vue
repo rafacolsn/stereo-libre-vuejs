@@ -35,7 +35,7 @@ export default {
       let id = post.categories.find(id => id !== 6) === undefined ?
           post.categories.find(id => id === 6) :
           post.categories.find(id => id !== 6);
-      console.log(id);
+      // console.log(id);
       return this.getCategoryById(id)
     }
   },
