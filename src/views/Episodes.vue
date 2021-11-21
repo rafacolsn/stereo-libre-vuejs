@@ -32,9 +32,9 @@ export default {
       return moment(date).format('DD MMMM YYYY')
     },
     getCategory(post) {
-      let id = post.categories.find(id => id !== 4) === undefined ?
-          post.categories.find(id => id === 4) :
-          post.categories.find(id => id !== 4);
+      let id = post.categories.find(id => id !== 6) === undefined ?
+          post.categories.find(id => id === 6) :
+          post.categories.find(id => id !== 6);
       console.log(id);
       return this.getCategoryById(id)
     }

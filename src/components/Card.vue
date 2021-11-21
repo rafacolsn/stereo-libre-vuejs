@@ -7,7 +7,7 @@
       <div class="img_wrapper">
         <img v-if="image" :src="imageUrl" :alt="post.title.rendered" class="image">
       </div>
-      <h4 :style="'color:' + color" v-html="(post.title.rendered).toUpperCase()"></h4>
+      <h4 :style="'color:' + color" v-html="post.title.rendered"></h4>
       <div class="postData">{{ postData }}</div>
       <div class="text" v-html="post.excerpt.rendered"></div>
     </div>
@@ -52,10 +52,10 @@ export default {
   },
   created() {
     this.loading = true
-    // a post has 2 categories, we get the 4th (Episodes) only if it's the only one
-    const id = this.post.categories.find(id => id !== 4) === undefined ?
-        this.post.categories.find(id => id === 4) :
-        this.post.categories.find(id => id !== 4);
+    // a post has 2 categories, we get the 6th (Episodes) only if it's the only one
+    const id = this.post.categories.find(id => id !== 6) === undefined ?
+        this.post.categories.find(id => id === 6) :
+        this.post.categories.find(id => id !== 6);
     this.category = this.getCategoryById(id)
     this.color = this.getColorById(id)[id] + ';';
 

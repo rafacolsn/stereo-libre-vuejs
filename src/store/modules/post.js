@@ -11,17 +11,17 @@ const getDefaultState = () => {
         posts: [],
         categories: [],
         colors: [
-            {4: '#899499'}, // episodes
-            {10: '#008BE2'}, // artistes
-            {26: '#2ca88b'}, // cinéma
-            {15: '#846700'}, // courant musical
-            {9: '#E09900'}, // Découvertes
-            {7: '#0C71C3'}, // Instruments
-            {17: '#8300E9'}, // Labels
-            {8: '#FFE121'}, // Live
-            {12: '#1d8920'}, // Thème
-            {11: '#af3832'}, // Vintage
-            {16: '#d650d0'} // Voyages
+            {6: '#899499'}, // episodes
+            {12: '#008BE2'}, // artistes
+            {7: '#2ca88b'}, // cinéma
+            {14: '#846700'}, // courant musical
+            {10: '#E09900'}, // Découvertes
+            {15: '#0C71C3'}, // Instruments
+            {16: '#8300E9'}, // Labels
+            {11: '#FFE121'}, // Live
+            {13: '#1d8920'}, // Thème
+            {8: '#af3832'}, // Vintage
+            {9: '#d650d0'} // Voyages
         ],
         lastPostByCategories: [],
         postsByCategories: []
@@ -78,9 +78,9 @@ export default {
                     fetch(`https://admin.stereolibre.be/wp-json/wp/v2/media/${context.state.post.featured_media}`).then(resp => {
                         resp.json().then(r => {
                             context.commit("setImage", r)
-                            let id = 4;
-                            // a post has 2 categories, has we don't want the 4th (Episodes)
-                            id = context.state.post.categories.find(id => id !== 4);
+                            let id = 6;
+                            // a post has 2 categories, has we don't want the 6th (Episodes)
+                            id = context.state.post.categories.find(id => id !== 6);
                             context.commit('setCategory', context.getters.getCategoryById(id))
                             context.commit('setColor', context.getters.getColorById(id)[id]);
                             context.commit("setLoading", false)
@@ -93,7 +93,7 @@ export default {
         },
         async getEpisodes(context) {
             context.commit("setLoading", true)
-            return await fetch('https://admin.stereolibre.be/wp-json/wp/v2/posts/?categories=4&per_page=100').then(resp => {
+            return await fetch('https://admin.stereolibre.be/wp-json/wp/v2/posts/?categories=6&per_page=100').then(resp => {
                 resp.json().then(r => {
                     context.commit("setPosts", r)
                     context.commit("setLoading", false)
@@ -137,7 +137,7 @@ export default {
                 await context.dispatch("getCategories");
             }
 
-            let categories = context.state.categories.filter(cat => ! [1, 4, 25].includes(cat.id));
+            let categories = context.state.categories.filter(cat => ! [1, 6, 25].includes(cat.id));
             categories.forEach(cat => context.dispatch("getOnePostByCategoryId", cat.id))
             context.commit('setPosts', context.state.lastPostByCategories)
             context.commit("setLoading", false)
@@ -154,8 +154,8 @@ export default {
             return state.colors.find(color => color[id])
         },
         filteredCategories(state) {
-            // 1 = uncategorized, 4 = episodes, 25 = trailer
-            return state.categories.filter(cat => ! [1, 4, 25].includes(cat.id))
+            // 1 = uncategorized, 6 = episodes, 25 = trailer
+            return state.categories.filter(cat => ! [1, 6, 25].includes(cat.id))
         },
     }
 }

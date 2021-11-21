@@ -1,7 +1,7 @@
 <template>
   <div class="content wrapper">
     <div class="card-header">
-      <h4 v-html="post.title.rendered.toUpperCase()"></h4>
+      <h4 v-html="post.title.rendered"></h4>
       <p class="postData">{{ postData }}</p>
       <div class="navigation">
         <div v-if="!getPrev.id">&nbsp;</div>
