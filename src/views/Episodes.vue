@@ -6,7 +6,7 @@
     </div>
     <div class="list" v-for="post in posts" :key="post.id">
       <router-link :to="'/episode/'+post.id">
-        <p v-html="(post.title.rendered).toUpperCase()"></p>
+        <p v-html="post.title.rendered"></p>
         <p style="color: #828282; font-size: small">{{ format(post.date) }} |
           <router-link :to="'/category/'+getCategory(post).id">
             {{ getCategory(post).name }}
