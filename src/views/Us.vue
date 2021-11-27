@@ -30,7 +30,7 @@
         </p>
         <p><a href="http://www.equinoxefm.be" target="_blank">Equinoxe FM</a> (105FM) Zone Liège
           Tous les dimanches de 20 à 22h.
-          rediffusion le vendredi de 22h à minuit.
+          rediffusion le vendredi à minuit (techniquement, c'est le samedi).
         </p>
       </div>
     </div>
