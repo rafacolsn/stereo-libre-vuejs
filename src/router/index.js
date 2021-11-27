@@ -15,11 +15,6 @@ const router = new VueRouter({
         {
             path: '/',
             name: '',
-            redirect: 'home'
-        },
-        {
-            path: '/home',
-            name: 'home',
             component: Cards,
         },
         {

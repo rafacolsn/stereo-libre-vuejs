@@ -25,7 +25,9 @@ export default {
     Header,
     Menu
   },
-  created() {
+  async created() {
+    await this.$store.dispatch('post/getCategories');
+    await this.$store.dispatch('post/getEpisodes');
     moment.locale('fr');
   }
 }

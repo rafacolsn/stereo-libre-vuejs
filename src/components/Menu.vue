@@ -2,10 +2,10 @@
   <nav>
     <img v-if="$mq === 'mobile' && ! showMobileMenu" @click="showMobileMenu = ! showMobileMenu"
          src="../assets/icon_menu.png" alt="icon menu" width="75px">
-    <div @click="showMobileMenu = !showMobileMenu" class="close" v-if="$mq === 'mobile' ? showMobileMenu : true">x</div>
+    <div @click="showMobileMenu = !showMobileMenu" class="close" v-if="$mq === 'mobile' ? showMobileMenu : false">x</div>
     <ul :class="$mq" v-if="$mq === 'mobile' ? showMobileMenu : true">
       <li :class="$mq ==='desktop' ? 'zoom': ''">
-        <router-link to="/home">STEREO LIBRE</router-link>
+        <router-link to="/">STEREO LIBRE</router-link>
       </li>
       <li @click="show()">
         <a style="cursor: pointer">CATEGORIES</a>
