@@ -20,15 +20,15 @@ export default {
   computed: {
     ...mapState('post', ['list', 'postsByCategories']),
     ...mapGetters('post', ["getCategoryById"]),
-    selectedList() {
-      if (this.$route.name === 'category') {
-        return this.postsByCategories;
-      }
-      return this.list
-    },
+    // selectedList() {
+    //   if (this.$route.name === 'category') {
+    //     return this.postsByCategories;
+    //   }
+    //   return this.list
+    // },
     sortedList() {
       // eslint-disable-next-line vue/no-side-effects-in-computed-properties
-      return this.selectedList.sort((a, b) => {
+      return this.list.sort((a, b) => {
         return new Date(b.date.valueOf()) - new Date(a.date.valueOf())
       })
     },
