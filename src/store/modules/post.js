@@ -9,6 +9,7 @@ const getDefaultState = () => {
         },
         color: null,
         posts: [],
+        list: [],
         categories: [],
         colors: [
             {6: '#899499'}, // episodes
@@ -40,6 +41,12 @@ export default {
         },
         setPost(state, value) {
             state.post = value;
+        },
+        setList(state, value) {
+            state.list = value;
+        },
+        pushList(state, value) {
+            state.list.push(value);
         },
         setImage(state, value) {
             state.image = value;
@@ -91,14 +98,31 @@ export default {
 
 
         },
-        async getEpisodes(context) {
+        async getEpisodes(context, category = 6, number = 48) {
             context.commit("setLoading", true)
-            return await fetch('https://admin.stereolibre.be/wp-json/wp/v2/posts/?categories=6&per_page=100').then(resp => {
-                resp.json().then(r => {
-                    context.commit("setPosts", r)
-                    context.commit("setLoading", false)
+            return await fetch('https://admin.stereolibre.be/wp-json/wp/v2/posts/?categories=' + category + '&per_page=' + number)
+                .then(resp => {
+                    resp.json().then(r => {
+                        context.commit("setPosts", r)
+                        context.commit("setLoading", false)
+                    })
                 })
-            })
+
+        },
+        async getAll(context) {
+            context.commit("setLoading", true)
+            context.commit("setList", [])
+
+            let categories = context.state.categories.filter(cat => ! [1, 6, 25].includes(cat.id));
+            categories.forEach(async cat => await fetch('https://admin.stereolibre.be/wp-json/wp/v2/posts/?categories=' + cat.id + '&per_page=100')
+                .then(resp => {
+                    resp.json().then(r => {
+                        r.map(item => context.commit('pushList', item));
+                    })
+                    context.commit("setPost", context.state.list[0])
+                }));
+
+            context.commit("setLoading", false)
 
         },
         switchFilteredPosts(context, id) {
@@ -133,9 +157,6 @@ export default {
         async getOnePostPerCategories(context) {
             context.commit('resetLastPostByCategories');
             context.commit("setLoading", true)
-            if (context.state.categories.length < 1) {
-                await context.dispatch("getCategories");
-            }
 
             let categories = context.state.categories.filter(cat => ! [1, 6, 25].includes(cat.id));
             categories.forEach(cat => context.dispatch("getOnePostByCategoryId", cat.id))

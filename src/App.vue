@@ -26,9 +26,10 @@ export default {
     Menu
   },
   async created() {
+    moment.locale('fr');
     await this.$store.dispatch('post/getCategories');
     await this.$store.dispatch('post/getEpisodes');
-    moment.locale('fr');
+    await this.$store.dispatch('post/getAll');
   }
 }
 </script>

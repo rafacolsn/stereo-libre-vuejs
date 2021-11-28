@@ -1,33 +1,25 @@
 <template>
   <div class="content">
-    <div class="card-header">
-      <h4>NOS PODCASTS</h4>
-      <p><a class="pointer" @click="showModal = true">S'abonner</a></p>
-      <Modal v-if="showModal" v-on:modalEvent="choosePlatform"></Modal>
-    </div>
+    <card-header title="NOS PODCASTS"></card-header>
     <div v-if="loading" class="loading">
       Un moment svp, ça arrive... :)
       <pulse-loader color="#E09900"></pulse-loader>
     </div>
     <div class="cards" v-if="!loading">
-      <Card v-for="post in podcast" :key="post.id" :post="post"></Card>
+      <Card v-for="post in podcast" :key="'post_'+post.id" :post="post"></Card>
     </div>
   </div>
 </template>
 
 <script>
 import Card from '@/components/Card';
-import Modal from '@/components/Modal'
 import {mapState, mapGetters} from 'vuex';
 import PulseLoader from 'vue-spinner/src/PulseLoader.vue'
+import CardHeader from "@/components/CardHeader";
 
 export default {
   name: "Cards",
-  data() {
-    return {
-      showModal: false,
-    }
-  },
+
   computed: {
     ...mapState("post", ["loading", "posts"]),
     ...mapGetters("post", ["filteredCategories"]),
@@ -50,17 +42,17 @@ export default {
       }
     },
   },
-  beforeDestroy() {
-    this.$store.commit('post/resetLastPostByCategories')
-    this.$store.commit('post/resetPostsByCategories')
-  },
+  // beforeDestroy() {
+  //   this.$store.commit('post/resetLastPostByCategories')
+  //   this.$store.commit('post/resetPostsByCategories')
+  // },
   async created() {
-    await this.$store.dispatch("post/getOnePostPerCategories");
+    await this.$store.dispatch("post/getEpisodes");
   },
   components: {
     Card,
-    Modal,
-    PulseLoader
+    PulseLoader,
+    CardHeader
   }
 }
 </script>

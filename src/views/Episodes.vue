@@ -4,30 +4,46 @@
       <h4>EPISODES</h4>
       <p>Et encore il n'y a pas tout :)</p>
     </div>
-    <div class="list" v-for="post in posts" :key="post.id">
-      <router-link :to="'/episode/'+post.id">
-        <p v-html="post.title.rendered"></p>
-        <p style="color: #828282; font-size: small">{{ format(post.date) }} |
-          <router-link :to="'/category/'+getCategory(post).id">
-            {{ getCategory(post).name }}
-          </router-link>
-        </p>
-      </router-link>
+    <div class="list" v-if="posts.length">
+      <select name="list" id="list" @change="getPost($event)">
+        <option v-for="post in posts" :value="post.id" :key="post.id">
+            <p v-html="post.title.rendered"></p> -
+            <p style="color: #828282; font-size: small">{{ format(post.date) }} -
+                {{ getCategory(post).name }}
+            </p>
+        </option>
+      </select>
+<!--      <Card v-if="this.post" :key="this.post.id" :post="this.post"></Card>-->
     </div>
+<!--    <div class="list" v-for="post in posts" :key="post.id">-->
+<!--      <router-link :to="'/episode/'+post.id">-->
+<!--        <p v-html="post.title.rendered"></p>-->
+<!--        <p style="color: #828282; font-size: small">{{ format(post.date) }} |-->
+<!--          <router-link :to="'/category/'+getCategory(post).id">-->
+<!--            {{ getCategory(post).name }}-->
+<!--          </router-link>-->
+<!--        </p>-->
+<!--      </router-link>-->
+<!--    </div>-->
   </div>
 </template>
 
 <script>
 import {mapGetters, mapState} from "vuex";
 import moment from "moment";
+// import Card from "@/components/Card";
 
 export default {
   name: "Episodes",
   computed: {
-    ...mapState('post', ['posts']),
+    ...mapState('post', ['posts','post','categories']),
     ...mapGetters('post', ["getCategoryById"]),
   },
   methods: {
+    getPost(event) {
+      console.log(event.target.value)
+      this.$store.commit('post/setPost', this.posts.find(post => post.id = event.target.value));
+    },
     format(date) {
       return moment(date).format('DD MMMM YYYY')
     },
@@ -39,8 +55,11 @@ export default {
       return this.getCategoryById(id)
     }
   },
-  created() {
-    this.$store.dispatch('post/getEpisodes')
+  async created() {
+    await this.$store.dispatch('post/getAll');
+  },
+  components: {
+    // Card
   }
 }
 </script>
@@ -48,7 +67,6 @@ export default {
 <style scoped>
 h3 {
 }
-
 .episode {
   text-decoration: none;
   color: #555555;

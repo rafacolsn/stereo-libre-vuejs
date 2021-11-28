@@ -75,6 +75,7 @@ export default {
     box-shadow: 0 0 4px 0 rgba(0, 0, 0, 0.5);
 
     .close {
+      cursor: pointer;
       font-weight: bold;
       position: absolute;
       color: white;

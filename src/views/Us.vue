@@ -1,8 +1,6 @@
 <template>
   <div class="content wrapper">
-    <div class="card-header">
-      <h4>L’émission “déformatée”</h4>
-    </div>
+    <card-header title="L’émission “déformatée”"></card-header>
     <div class="flex">
       <div class="img">
       </div>
@@ -39,8 +37,13 @@
 
 <script>
 
+import CardHeader from "@/components/CardHeader";
+
 export default {
   name: "Us",
+  components: {
+    CardHeader
+  }
 }
 </script>
 

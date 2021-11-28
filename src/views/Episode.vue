@@ -1,16 +1,17 @@
 <template>
   <div class="content wrapper">
-    <div class="card-header">
-      <h4 v-html="post.title.rendered"></h4>
-      <p class="postData">{{ postData }}</p>
-      <div class="navigation">
-        <div v-if="!getPrev.id">&nbsp;</div>
-        <router-link v-if="getPrev.id" :to="'/episode/' + getPrev.id">&lt;&nbsp;<span
-            v-html="getPrev.title.rendered"></span></router-link>
-        <router-link v-if="getNext.id" :to="'/episode/' + getNext.id"><span v-html="getNext.title.rendered"></span>&nbsp;&gt;
-        </router-link>
-      </div>
-    </div>
+    <card-header :title="post.title.rendered" :post-data="postData" :style="'border-bottom: 1rem solid ' + color"></card-header>
+<!--    <div class="card-header">-->
+<!--      <h4 v-html="post.title.rendered"></h4>-->
+<!--      <p class="postData">{{ postData }}</p>-->
+<!--      <div class="navigation">-->
+<!--        <div v-if="!getPrev.id">&nbsp;</div>-->
+<!--        <router-link v-if="getPrev.id" :to="'/episode/' + getPrev.id">&lt;&nbsp;<span-->
+<!--            v-html="getPrev.title.rendered"></span></router-link>-->
+<!--        <router-link v-if="getNext.id" :to="'/episode/' + getNext.id"><span v-html="getNext.title.rendered"></span>&nbsp;&gt;-->
+<!--        </router-link>-->
+<!--      </div>-->
+<!--    </div>-->
     <div class="tag" :style="'background:' + color +';'">
       <router-link :to="'/category/'+category.id">{{ tag }}</router-link>
     </div>
@@ -26,6 +27,7 @@
 <script>
 import {mapGetters, mapState} from "vuex";
 import moment from "moment";
+import CardHeader from "@/components/CardHeader";
 
 export default {
   name: "Episode",
@@ -72,6 +74,9 @@ export default {
       await this.$store.dispatch('post/getEpisode', parseInt(to.params.id));
     }
   },
+  components: {
+    CardHeader
+  }
 }
 </script>
 
