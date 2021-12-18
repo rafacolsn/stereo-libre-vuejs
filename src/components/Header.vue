@@ -1,8 +1,8 @@
 <template>
   <div class="wrapper">
+    <img id="cover" alt="img" :src="randomImage()" class="image">
     <img id="logo" alt="logo" src="@/assets/logo-sl.jpg">
-    <!--    <img id="header" alt="header" src="@/assets/couv.jpg">-->
-    <div class="text">
+    <div class="text" :class="$mq">
       <h1>STEREO LIBRE</h1>
       <p>Le rendez-vous du libertinage musical, enfin déconfiné.
         Deux animateurs et chacun sa playlist de retour en
@@ -13,21 +13,43 @@
 
 <script>
 export default {
-  name: "Header"
+  name: "Header",
+  methods: {
+    randomImage() {
+      let images = [
+        require('@/assets/IMG_7808.jpg'),
+        require('@/assets/IMG_7810.jpg'),
+        require('@/assets/IMG_7812.jpg')
+      ]
+      return `${images[Math.floor(Math.random() * images.length)]}`;
+    }
+  }
 }
 </script>
 
-<style scoped>
+<style scoped lang="scss">
 .wrapper {
-  background-image: url("../assets/couv-16-9.jpg");
-  background-size: cover;
-  background-position: center 15%;
   height: 25rem;
   position: relative;
+  background-color: black;
+  border-radius: 50px;
+  margin: auto;
+  width: 99%;
+  display: flex;
+}
+
+.image {
+  max-height: 25rem;
+  border-radius: 50px 0 0 50px;
 }
 
 .text {
   color: white;
+  padding: 7rem 1rem 1rem 1rem;
+
+  &.mobile {
+    display: none;
+  }
 }
 
 .text p {
@@ -36,13 +58,10 @@ export default {
   opacity: 70%;
   border-radius: 5px;
   padding: .2rem 1rem;
-  margin: 2rem auto 0;
-  width: fit-content;
 }
 
 .text h1 {
   font-size: 3rem;
-  padding-top: 3rem;
 }
 
 
