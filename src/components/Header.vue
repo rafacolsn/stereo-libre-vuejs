@@ -55,7 +55,7 @@ export default {
 .text p {
   font-size: 1rem;
   background: black;
-  opacity: 70%;
+  opacity: 0.7;
   border-radius: 5px;
   padding: .2rem 1rem;
 }
