@@ -1,6 +1,6 @@
 <template>
   <div class="content wrapper">
-    <card-header :title="post.title.rendered" :post-data="postData" :style="'border-bottom: 1rem solid ' + color"></card-header>
+    <card-header :title="post.title.rendered.toUpperCase().replace(/(&RSQUO);/g, '\'')" :post-data="postData" :style="'border-bottom: 1rem solid ' + color"></card-header>
 <!--    <div class="card-header">-->
 <!--      <h4 v-html="post.title.rendered"></h4>-->
 <!--      <p class="postData">{{ postData }}</p>-->

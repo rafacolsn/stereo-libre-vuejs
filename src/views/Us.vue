@@ -85,5 +85,8 @@ p {
   padding: 1rem;
 }
 
+a {
+  text-decoration: underline;
+}
 
 </style>

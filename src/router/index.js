@@ -1,6 +1,6 @@
 import Vue from "vue";
 import VueRouter from "vue-router";
-import Episodes from "@/views/Episodes";
+// import Episodes from "@/views/Episodes";
 import Episode from "@/views/Episode";
 import Cards from "@/views/Cards";
 import Category from "@/views/Category";
@@ -22,11 +22,11 @@ const router = new VueRouter({
             name: 'nous',
             component: Us,
         },
-        {
-            path: '/episodes',
-            name: 'episodes',
-            component: Episodes
-        },
+        // {
+        //     path: '/episodes',
+        //     name: 'episodes',
+        //     component: Episodes
+        // },
         {
             path: '/episode/:id',
             name: 'episode',

@@ -7,7 +7,7 @@
       <div class="img_wrapper">
         <img v-if="image" :src="imageUrl" :alt="post.title.rendered" class="image">
       </div>
-      <h4 :style="'color:' + color" v-html="post.title.rendered"></h4>
+      <h4 :style="'color:' + color" v-html="title.replace(/(&RSQUO);/g, '\'')"></h4>
       <div class="postData">{{ postData }}</div>
       <div class="text" v-html="post.excerpt.rendered"></div>
     </div>
@@ -38,6 +38,9 @@ export default {
   },
   computed: {
     ...mapGetters('post', ['getCategoryById', 'getColorById']),
+    title() {
+      return this.post.title.rendered.toUpperCase();
+    },
     postData() {
       return moment(this.post.date).format('DD MMMM YYYY') + ' | ' + this.category.name
     },

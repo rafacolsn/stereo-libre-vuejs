@@ -7,7 +7,7 @@
     <div class="list" v-if="posts.length">
       <select name="list" id="list" @change="getPost($event)">
         <option v-for="post in posts" :value="post.id" :key="post.id">
-            <p v-html="post.title.rendered"></p> -
+            <p v-html="title.replace(/(&RSQUO);/g, '\'')"></p> -
             <p style="color: #828282; font-size: small">{{ format(post.date) }} -
                 {{ getCategory(post).name }}
             </p>
@@ -38,6 +38,9 @@ export default {
   computed: {
     ...mapState('post', ['posts','post','categories']),
     ...mapGetters('post', ["getCategoryById"]),
+    title() {
+      return this.post.title.rendered.toUpperCase();
+    },
   },
   methods: {
     getPost(event) {
