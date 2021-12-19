@@ -1,6 +1,6 @@
 <template>
-  <div class="wrapper">
-    <img id="cover" alt="img" :src="randomImage()" class="image">
+  <div class="wrapper" :class="$mq">
+    <img id="cover" alt="img" :src="randomImage()" class="image" :class="$mq">
     <img id="logo" alt="logo" src="@/assets/logo-sl.jpg">
     <div class="text" :class="$mq">
       <h1>STEREO LIBRE</h1>
@@ -36,16 +36,28 @@ export default {
   margin: auto;
   width: 99%;
   display: flex;
+  align-items: center;
+  &.mobile {
+    height: unset;
+    width: 100%;
+  }
+
+
 }
 
 .image {
   max-height: 25rem;
   border-radius: 50px 0 0 50px;
+  &.mobile {
+    max-width: 100%;
+    border-radius: 14px;
+  }
+
 }
 
 .text {
+  flex: 1;
   color: white;
-  padding: 7rem 1rem 1rem 1rem;
 
   &.mobile {
     display: none;
