@@ -1,5 +1,5 @@
 <template>
-  <div>
+  <div class="txt">
     <select v-if="sortedList" name="list" id="list" @change="redirect($event)" :value="defaultId">
       <option v-for="post in sortedList" :value="post.id" :key="'select_'+post.id">
         <p v-html="post.title.rendered"></p> -
@@ -20,12 +20,6 @@ export default {
   computed: {
     ...mapState('post', ['list', 'postsByCategories']),
     ...mapGetters('post', ["getCategoryById"]),
-    // selectedList() {
-    //   if (this.$route.name === 'category') {
-    //     return this.postsByCategories;
-    //   }
-    //   return this.list
-    // },
     sortedList() {
       // eslint-disable-next-line vue/no-side-effects-in-computed-properties
       return this.list.sort((a, b) => {
@@ -62,4 +56,11 @@ export default {
 </script>
 
 <style scoped>
+@media screen and (max-width: 576px) {
+  .txt {
+    inline-size: 99%;
+    overflow: hidden;
+    /*max-width: 150px;*/
+  }
+}
 </style>
