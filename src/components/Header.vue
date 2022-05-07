@@ -4,9 +4,7 @@
     <img id="logo" alt="logo" src="@/assets/logo-sl.jpg">
     <div class="text" :class="$mq">
       <h1>STEREO LIBRE</h1>
-      <p>Le rendez-vous du libertinage musical, enfin déconfiné.
-        Deux animateurs et chacun sa playlist de retour en
-        studio.</p>
+      <p>Le rendez-vous du libertinage musical. Deux animateurs et chacun sa playlist (même si parfois on triche).</p>
     </div>
   </div>
 </template>
@@ -37,6 +35,7 @@ export default {
   width: 99%;
   display: flex;
   align-items: center;
+
   &.mobile {
     height: unset;
     width: 100%;
@@ -48,6 +47,7 @@ export default {
 .image {
   max-height: 25rem;
   border-radius: 50px 0 0 50px;
+
   &.mobile {
     max-width: 100%;
     border-radius: 14px;
