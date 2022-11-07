@@ -18,20 +18,23 @@ export default {
       platforms: [
         {
           label: 'Spotify',
-          url: 'https://open.spotify.com/show/7qp2xN3wvPc2aqJcCVV8FD',
+          // url: 'https://open.spotify.com/show/7qp2xN3wvPc2aqJcCVV8FD',
+          url: 'https://open.spotify.com/show/24WLp9BB3seP2Vg0Ar7twl',
         },
         {
-          label: 'iTunes',
-          url: 'https://podcasts.apple.com/us/podcast/st%C3%A9r%C3%A9o-libre/id1468910081?uo=4',
+          label: 'Apple Podcast',
+          // url: 'https://podcasts.apple.com/us/podcast/st%C3%A9r%C3%A9o-libre/id1468910081?uo=4',
+          url: 'https://podcasts.apple.com/be/podcast/st%C3%A9r%C3%A9o-libre/id1652153153?l=fr',
         },
         {
           label: 'Deezer',
-          url: 'https://www.deezer.com/us/show/3477317',
+          // url: 'https://www.deezer.com/us/show/3477317',
+          url: 'https://www.deezer.com/fr/show/5318617',
         },
-        {
-          label: 'Anchor',
-          url: 'https://anchor.fm/stereo-libre',
-        },
+        // {
+        //   label: 'Anchor',
+        //   url: 'https://anchor.fm/stereo-libre',
+        // },
         {
           label: 'Google-Podcasts',
           url: 'https://podcasts.google.com/feed/aHR0cHM6Ly9hbmNob3IuZm0vcy9jMWY4Y2ZjL3BvZGNhc3QvcnNz',

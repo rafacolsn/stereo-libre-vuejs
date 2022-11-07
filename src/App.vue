@@ -18,7 +18,7 @@ export default {
   name: 'App',
   computed: {
     footer() {
-      return "Jérôme Tielemans & Raphaël Colson @ Stéréo Libre - " + moment().format('MMMM Y')
+      return "Djé & Raf @ Stéréo Libre - " + moment().format('MMMM Y')
     }
   },
   components: {
