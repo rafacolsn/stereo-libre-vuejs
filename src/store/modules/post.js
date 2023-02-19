@@ -119,7 +119,7 @@ export default {
                     resp.json().then(r => {
                         r.map(item => context.commit('pushList', item));
                     })
-                    context.commit("setPost", context.state.list[0])
+                    // context.commit("setPost", context.state.list[0])
                 }));
 
             context.commit("setLoading", false)
