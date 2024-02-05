@@ -97,7 +97,7 @@ h4 {
 }
 
 .img_wrapper {
-  max-height: 15rem;
+  max-height: 20rem;
   width: 20rem;
   overflow: hidden;
   border-radius: 10px;

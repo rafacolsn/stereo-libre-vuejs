@@ -21,10 +21,9 @@
           découvrir de la musique
           qu’elle soit passée ou présente…
         </p>
-        <p> STEREO LIBRE propose un mélange de 2 playlists imaginées par 2 animateurs (nous) découvrant mutuellement la
-          playlist de l’autre <strike>parfois avec stupeur</strike>, articulées autour d’un thème, d’un artiste, d’un
-          courant musical. En
-          plus, on passe même à la radio.
+        <p> STEREO LIBRE propose un mélange de nos playlists imaginées par les animateurs (nous) découvrant mutuellement la
+          playlist des uns des autres <strike>parfois avec stupeur</strike>, articulées autour d’un thème, d’un artiste, d’un
+          courant musical. En plus, on passe même à la radio.
         </p>
         <p><a href="http://www.equinoxefm.be" target="_blank">Equinoxe FM</a> (105FM) Zone Liège
           Tous les dimanches de 20 à 22h.

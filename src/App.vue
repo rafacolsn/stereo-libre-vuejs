@@ -18,7 +18,7 @@ export default {
   name: 'App',
   computed: {
     footer() {
-      return "Djé & Raf @ Stéréo Libre - " + moment().format('MMMM Y')
+      return "Adri, Djé & Raf @ Stéréo Libre - " + moment().format('MMMM Y')
     }
   },
   components: {
