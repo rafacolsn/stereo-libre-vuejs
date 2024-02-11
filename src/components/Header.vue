@@ -4,7 +4,7 @@
     <img id="logo" alt="logo" src="@/assets/logo-sl.jpg">
     <div class="text" :class="$mq">
       <h1>STEREO LIBRE</h1>
-      <p>Le rendez-vous du libertinage musical. Deux animateurs et chacun sa playlist (même si parfois on triche).</p>
+      <p>Le rendez-vous du libertinage musical. Un thème, des animateurs, chacun sa playlist.</p>
     </div>
   </div>
 </template>
