@@ -2,10 +2,10 @@
   <div class="txt">
     <select v-if="sortedList" name="list" id="list" @change="redirect($event)" :value="defaultId">
       <option v-for="post in sortedList" :value="post.id" :key="'select_'+post.id">
-        <p v-html="post.title.rendered"></p> -
-        <p style="color: #828282; font-size: small">{{ format(post.date) }} -
+        <span v-html="post.title.rendered"></span> -
+        <span style="color: #828282; font-size: small">{{ format(post.date) }} -
           {{ getCategory(post).name }}
-        </p>
+        </span>
       </option>
     </select>
   </div>

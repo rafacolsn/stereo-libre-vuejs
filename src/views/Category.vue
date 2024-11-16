@@ -1,6 +1,6 @@
 <template>
   <div class="content">
-    <card-header :title="category.name.toUpperCase()" :style="'border-bottom: 1rem solid ' + color"></card-header>
+    <card-header :title="category.name.toUpperCase()" :style="'border-bottom: 1rem solid ' + color" with-select></card-header>
     <div v-if="loading" class="loading">
       Un moment svp, ça arrive... :)
       <pulse-loader :color="color"></pulse-loader>

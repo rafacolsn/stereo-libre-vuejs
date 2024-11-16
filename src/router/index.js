@@ -1,8 +1,7 @@
 import Vue from "vue";
 import VueRouter from "vue-router";
-// import Episodes from "@/views/Episodes";
 import Episode from "@/views/Episode";
-import Cards from "@/views/Cards";
+import MainView from "@/views/MainView.vue";
 import Category from "@/views/Category";
 import Us from "@/views/Us";
 
@@ -15,18 +14,13 @@ const router = new VueRouter({
         {
             path: '/',
             name: '',
-            component: Cards,
+            component: MainView,
         },
         {
             path: '/nous',
             name: 'nous',
             component: Us,
         },
-        // {
-        //     path: '/episodes',
-        //     name: 'episodes',
-        //     component: Episodes
-        // },
         {
             path: '/episode/:id',
             name: 'episode',
@@ -39,5 +33,4 @@ const router = new VueRouter({
         },
     ]
 })
-// router.replace({ path: '*', redirect: '/' })
 export default router;

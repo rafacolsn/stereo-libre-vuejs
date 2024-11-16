@@ -1,15 +1,16 @@
 <template>
   <div class="wrapper" :class="$mq">
     <img id="cover" alt="img" :src="randomImage()" class="image" :class="$mq">
-    <img id="logo" alt="logo" src="@/assets/logo-sl.jpg">
+    <img v-if="$mq !== 'mobile'" id="logo" alt="logo" src="@/assets/logo-sl.jpg">
     <div class="text" :class="$mq">
       <h1>STEREO LIBRE</h1>
       <p id="subtitle">Le rendez-vous du libertinage musical. Un thème, des animateurs, chacun sa playlist.</p>
-      <p id="social"/>
+      <p id="social"></p>
       <div class="wrap">
         <ul class="platform">
           <li v-for="(platform, index) in platforms" :key="index"><a :href="platform.url" target="_blank"><img
-              :src="require(`@/assets/${platform.label}.png`)" width="25" :alt="platform.label" :title="platform.label"/></a>
+              :src="require(`@/assets/${platform.label}.png`)" width="25" :alt="platform.label"
+              :title="platform.label"/></a>
           </li>
         </ul>
       </div>
@@ -23,7 +24,7 @@ import {platforms} from "@/utils/platforms";
 export default {
   data() {
     return {
-      text: "S'abonner au podcast \ud83d\udda3",
+      text: "S'abonner au podcast 🖣",
       typingSpeed: 80,
       platforms: platforms
     }
@@ -41,15 +42,13 @@ export default {
     typeWriter() {
       const social = document.getElementById("social");
       let index = 0;
-      const { text, typingSpeed } = this; // Destructure depuis les données
+      const {text, typingSpeed} = this;
 
       const type = () => {
         if (index < text.length) {
-          social.innerHTML += text.charAt(index); // Ajoute une lettre
+          social.innerHTML += text.charAt(index);
           index++;
-          setTimeout(type, typingSpeed); // Récursivité
-        } else {
-          social.style.borderRight = "none"; // Retire le curseur
+          setTimeout(type, typingSpeed);
         }
       };
 
@@ -76,17 +75,22 @@ export default {
   &.mobile {
     height: unset;
     width: 100%;
+    flex-direction: column;
+    align-items: center;
   }
 }
+
 #social {
   white-space: nowrap;
   overflow: hidden;
 }
+
 #subtitle {
   font-size: 1.2rem;
   color: white;
   display: inline-block;
 }
+
 .image {
   max-height: 25rem;
   border-radius: 50px 0 0 50px;
@@ -102,7 +106,9 @@ export default {
   color: white;
 
   &.mobile {
-    display: none;
+    display: block;
+    text-align: center;
+    padding: 1rem;
   }
 }
 
@@ -124,28 +130,65 @@ export default {
   bottom: 0;
   left: 3%;
 }
+
 #social {
   margin-top: 1rem;
   border-radius: 0;
 }
+
 .wrap {
   display: flex;
   justify-content: center;
   align-items: center;
 
+  &.mobile {
+    flex-direction: column;
+  }
 }
+
 .platform {
   list-style: none;
   display: flex;
+
+  &.mobile {
+    justify-content: center;
+  }
+
   li {
     padding: 1rem 1rem 0;
+
     img {
-      transition: transform 0.3s ease, filter 0.3s ease; /* Animation douce */
+      transition: transform 0.3s ease, filter 0.3s ease;
+      animation: pulse 2s infinite;
     }
+
     img:hover {
-      transform: scale(1.2); /* Tourne et agrandit légèrement */
-      filter: brightness(1.2); /* Rend l'icône légèrement plus lumineuse */
+      filter: brightness(1.2);
     }
+  }
+
+  li:nth-child(1) img {
+    animation-delay: 0s;
+  }
+
+  li:nth-child(2) img {
+    animation-delay: 0.1s;
+  }
+
+  li:nth-child(3) img {
+    animation-delay: 0.2s;
+  }
+}
+
+@keyframes pulse {
+  0% {
+    transform: scale(1);
+  }
+  50% {
+    transform: scale(1.2);
+  }
+  100% {
+    transform: scale(1);
   }
 }
 </style>

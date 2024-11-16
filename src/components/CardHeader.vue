@@ -2,12 +2,14 @@
   <div class="card-header">
     <h4 v-html="title"></h4>
     <p v-if="postData" class="postData">{{ postData }}</p>
-    <Select v-if="this.$route.name !== 'nous'"></Select>
+    <Search v-if="withSearch"></Search>
+    <Select v-if="withSelect"></Select>
   </div>
 </template>
 
 <script>
-import Select from "@/components/Select";
+import Search from "@/components/Search.vue";
+import Select from "@/components/Select.vue";
 
 export default {
   name: "CardHeader",
@@ -16,27 +18,24 @@ export default {
       type: String,
       default: "NOS PODCASTS"
     },
-    postData: String
+    postData: String,
+    withSearch: {
+      type: Boolean,
+      default: false
+    },
+    withSelect: {
+      type: Boolean,
+      default: false
+    }
   },
   data() {
     return {
       showModal: false,
     }
   },
-  methods: {
-    choosePlatform(event) {
-      switch (event) {
-        case 'spotify':
-          console.log(event);
-          break;
-        default:
-          this.showModal = false
-
-      }
-    },
-  },
   components: {
-    Select
+    Select,
+    Search
   }
 }
 </script>

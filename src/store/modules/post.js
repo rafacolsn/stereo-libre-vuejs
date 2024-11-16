@@ -25,7 +25,8 @@ const getDefaultState = () => {
             {9: '#d650d0'} // Voyages
         ],
         lastPostByCategories: [],
-        postsByCategories: []
+        postsByCategories: [],
+        searchQuery: ''
     };
 };
 
@@ -35,9 +36,6 @@ export default {
     mutations: {
         setLoading(state, value) {
             state.loading = value;
-        },
-        setFiltered(state, value) {
-            state.filtered = value;
         },
         setPost(state, value) {
             state.post = value;
@@ -72,9 +70,9 @@ export default {
         resetLastPostByCategories(state) {
             state.lastPostByCategories = [];
         },
-        resetPostsByCategories(state) {
-            state.postsByCategories = []
-        }
+        setSearchQuery(state, value) {
+            state.searchQuery = value;
+        },
     },
     actions: {
         async getEpisode(context, id) {
@@ -113,7 +111,7 @@ export default {
             context.commit("setLoading", true)
             context.commit("setList", [])
 
-            let categories = context.state.categories.filter(cat => ! [1, 6, 25].includes(cat.id));
+            let categories = context.state.categories.filter(cat => ![1, 6, 25].includes(cat.id));
             categories.forEach(async cat => await fetch('https://admin.stereolibre.be/wp-json/wp/v2/posts/?categories=' + cat.id + '&per_page=100')
                 .then(resp => {
                     resp.json().then(r => {
@@ -158,7 +156,7 @@ export default {
             context.commit('resetLastPostByCategories');
             context.commit("setLoading", true)
 
-            let categories = context.state.categories.filter(cat => ! [1, 6, 25].includes(cat.id));
+            let categories = context.state.categories.filter(cat => ![1, 6, 25].includes(cat.id));
             categories.forEach(cat => context.dispatch("getOnePostByCategoryId", cat.id))
             context.commit('setPosts', context.state.lastPostByCategories)
             context.commit("setLoading", false)
@@ -176,7 +174,25 @@ export default {
         },
         filteredCategories(state) {
             // 1 = uncategorized, 6 = episodes, 25 = trailer
-            return state.categories.filter(cat => ! [1, 6, 25].includes(cat.id))
+            return state.categories.filter(cat => ![1, 6, 25].includes(cat.id))
         },
+        sortedList(state) {
+            return state.list.sort((a, b) => {
+                return new Date(b.date.valueOf()) - new Date(a.date.valueOf())
+            })
+        },
+        sortedPodcasts(state) {
+            return state.posts.sort((a, b) => {
+                return new Date(b.date.valueOf()) - new Date(a.date.valueOf())
+            })
+        },
+        filteredPodcasts(state) {
+            if (state.searchQuery) {
+                return state.list.filter(podcast =>
+                    podcast.title.rendered.toLowerCase().includes(state.searchQuery.toLowerCase())
+                );
+            }
+            return [];
+        }
     }
 }
