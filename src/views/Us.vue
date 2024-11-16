@@ -69,7 +69,7 @@ export default {
   display: flex;
 }
 .img {
-  background-image: url('../assets/IMG_5216.jpeg');
+  background-image: url('../assets/IMG_9828.jpg');
   background-size: cover;
   background-position: center;
   border-radius: 0 0 0 10px;
