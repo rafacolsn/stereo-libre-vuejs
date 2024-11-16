@@ -35,7 +35,10 @@ export default {
       let images = [
         require('@/assets/IMG_7808.jpg'),
         require('@/assets/IMG_7810.jpg'),
-        require('@/assets/IMG_7812.jpg')
+        require('@/assets/IMG_7812.jpg'),
+        require('@/assets/IMG_9772.jpg'),
+        require('@/assets/IMG_9783.jpg'),
+        require('@/assets/IMG_9828.jpg'),
       ]
       return `${images[Math.floor(Math.random() * images.length)]}`;
     },
