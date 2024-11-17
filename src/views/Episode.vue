@@ -1,21 +1,23 @@
 <template>
   <div class="content wrapper">
-    <card-header :episodes="sortedEpisodesByCategory" with-select
-                 :title="episode.title.rendered.toUpperCase().replace(/(&RSQUO);/g, '\'')" :post-data="postData"
-                 :style="'border-bottom: 1rem solid ' + color"></card-header>
-    <div class="tag" :style="'background:' + color +';'">
-      <router-link :to="'/category/'+episode.category.id">{{ tag }}</router-link>
+    <div v-if="loading" class="loading">
+      Un moment svp, ça arrive... :)
+      <pulse-loader :color="color || '#899499'"></pulse-loader>
     </div>
-    <div class="data">
-      <div v-if="loading" class="loading">
-        Un moment svp, ça arrive... :)
-        <pulse-loader :color="color"></pulse-loader>
+    <template v-else>
+      <card-header :episodes="sortedEpisodesByCategory" with-select
+                   :title="episode.title.rendered.toUpperCase().replace(/(&RSQUO);/g, '\'')" :post-data="postData"
+                   :style="'border-bottom: 1rem solid ' + color"></card-header>
+      <div class="tag" :style="'background:' + color +';'">
+        <router-link :to="'/category/'+episode.category.id">{{ tag }}</router-link>
       </div>
-      <div v-if="! loading" class="img_wrapper">
-        <img :src="episode.imageUrl" :alt="episode.title.rendered" class="image">
+      <div class="data">
+        <div class="img_wrapper">
+          <img :src="episode.imageUrl" :alt="episode.title.rendered" class="image">
+        </div>
+        <div class="text" v-html="episode.content.rendered"></div>
       </div>
-      <div class="text" v-html="episode.content.rendered"></div>
-    </div>
+    </template>
   </div>
 </template>
 
@@ -24,6 +26,7 @@ import {mapGetters, mapState} from "vuex";
 import moment from "moment";
 import CardHeader from "@/components/CardHeader";
 import {getColorById} from "@/utils/colors";
+import PulseLoader from 'vue-spinner/src/PulseLoader.vue';
 
 export default {
   name: "Episode",
@@ -37,7 +40,7 @@ export default {
       return (this.episode.category.name).toUpperCase()
     },
     color() {
-      return getColorById(this.episode.category.id);
+      return getColorById(this.episode?.category?.id) || '#899499';
     },
   },
   watch: {
@@ -50,7 +53,7 @@ export default {
     }
   },
   components: {
-    CardHeader
+    CardHeader, PulseLoader
   }
 }
 </script>

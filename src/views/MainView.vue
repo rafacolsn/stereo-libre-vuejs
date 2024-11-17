@@ -4,7 +4,7 @@
                  :style="headerStyle"></card-header>
     <div v-if="loading" class="loading">
       Un moment svp, ça arrive... :)
-      <pulse-loader :color="color"></pulse-loader>
+      <pulse-loader :color="color || '#899499'"></pulse-loader>
     </div>
     <div class="cards" v-else>
       <Card v-for="podcast in podcasts" :key="'podcast_'+podcast.id" :post="podcast"></Card>
