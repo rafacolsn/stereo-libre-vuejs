@@ -1,5 +1,5 @@
-import { colors, getColorById } from "@/utils/colors";
-import { categories, excludedCategories } from "@/utils/categories";
+import {colors, getColorById} from "@/utils/colors";
+import {categories, excludedCategories} from "@/utils/categories";
 
 const getDefaultState = () => {
     return {
@@ -65,7 +65,7 @@ export default {
             return await mediaResponse.json();
         },
         async formatPodcast(context, post) {
-            let data = { ...post };
+            let data = {...post};
             const image = await context.dispatch("getImage", post.featured_media);
             data.imageUrl = image.source_url;
             const categoryId = post.categories.find(categoryId => !excludedCategories.includes(categoryId));
@@ -94,6 +94,9 @@ export default {
             }
         },
         async getLastEpisodes(context) {
+            if (this.lastEpisodes.length > 1) {
+                return;
+            }
             try {
                 context.commit("setLoading", true);
                 const response = await fetch(`${baseUrl}/posts/?categories=${categories.EPISODES}&per_page=48`);

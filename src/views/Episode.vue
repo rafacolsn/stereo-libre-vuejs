@@ -1,12 +1,16 @@
 <template>
   <div class="content wrapper">
-    <card-header :episodes="sortedEpisodesByCategory" with-select
+    <card-header :episodes="sortedEpisodesByCategory"
                  :title="episode.title.rendered.toUpperCase().replace(/(&RSQUO);/g, '\'')" :post-data="postData"
                  :style="'border-bottom: 1rem solid ' + color"></card-header>
     <div class="tag" :style="'background:' + color +';'">
       <router-link :to="'/category/'+episode.category.id">{{ tag }}</router-link>
     </div>
     <div class="data">
+      <div v-if="loading" class="loading">
+        Un moment svp, ça arrive... :)
+        <pulse-loader :color="color"></pulse-loader>
+      </div>
       <div v-if="! loading" class="img_wrapper">
         <img :src="episode.imageUrl" :alt="episode.title.rendered" class="image">
       </div>
