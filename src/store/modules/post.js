@@ -39,9 +39,6 @@ export default {
         pushList(state, value) {
             state.list.push(value);
         },
-        setImage(state, value) {
-            state.image = value;
-        },
         setCategory(state, value) {
             state.category = value;
         },

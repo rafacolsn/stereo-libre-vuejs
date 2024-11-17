@@ -1,12 +1,14 @@
 <template>
   <div class="content wrapper">
-    <card-header :episodes="sortedEpisodesByCategory" with-select :title="episode.title.rendered.toUpperCase().replace(/(&RSQUO);/g, '\'')" :post-data="postData" :style="'border-bottom: 1rem solid ' + color"></card-header>
+    <card-header :episodes="sortedEpisodesByCategory" with-select
+                 :title="episode.title.rendered.toUpperCase().replace(/(&RSQUO);/g, '\'')" :post-data="postData"
+                 :style="'border-bottom: 1rem solid ' + color"></card-header>
     <div class="tag" :style="'background:' + color +';'">
-      <router-link :to="'/category/'+category.id">{{ tag }}</router-link>
+      <router-link :to="'/category/'+episode.category.id">{{ tag }}</router-link>
     </div>
     <div class="data">
       <div v-if="! loading" class="img_wrapper">
-        <img :src="imageUrl" :alt="episode.title.rendered" class="image">
+        <img :src="episode.imageUrl" :alt="episode.title.rendered" class="image">
       </div>
       <div class="text" v-html="episode.content.rendered"></div>
     </div>
@@ -17,26 +19,27 @@
 import {mapGetters, mapState} from "vuex";
 import moment from "moment";
 import CardHeader from "@/components/CardHeader";
+import {getColorById} from "@/utils/colors";
 
 export default {
   name: "Episode",
   computed: {
-    ...mapState('post', ['episode', 'image', 'category', 'color', 'loading']),
+    ...mapState('post', ['episode', 'loading']),
     ...mapGetters('post', ["sortedEpisodesByCategory"]),
     postData() {
       return moment(this.episode.date).format('DD MMMM YYYY')
     },
     tag() {
-      return (this.category.name).toUpperCase()
+      return (this.episode.category.name).toUpperCase()
     },
-    imageUrl() {
-        return this.image.source_url;
-    }
+    color() {
+      return getColorById(this.episode.category.id);
+    },
   },
   watch: {
     '$route.params.id': {
       handler: async function (value) {
-        await this.$store.dispatch('post/getEpisode',value);
+        await this.$store.dispatch('post/getEpisode', value);
       },
       immediate: true
     }
