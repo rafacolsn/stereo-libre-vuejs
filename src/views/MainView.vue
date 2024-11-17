@@ -67,22 +67,6 @@ export default {
 </script>
 
 <style scoped>
-.filter {
-  background: #E3E3E3;
-  text-align: right;
-  padding-right: 1rem;
-}
-
-.select {
-  border: 0;
-  background: #E3E3E3;
-}
-
-.option {
-  background: #242424;
-  color: #E3E3E3;
-}
-
 .loading {
   background: #E3E3E3;
   padding: 5rem 0;
