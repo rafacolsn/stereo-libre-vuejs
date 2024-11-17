@@ -44,6 +44,7 @@ export default {
     '$route.params.id': {
       handler: async function (value) {
         await this.$store.dispatch('post/getEpisode', value);
+        await this.$store.dispatch("post/getPostsByCategoryId", this.episode.category.id);
       },
       immediate: true
     }
