@@ -3,13 +3,13 @@
     <h4 v-html="title"></h4>
     <p v-if="postData" class="postData">{{ postData }}</p>
     <Search v-if="withSearch"></Search>
-    <Select :episodes="episodes" v-if="withSelect"></Select>
+    <my-select :episodes="episodes" v-if="withSelect"></my-select>
   </div>
 </template>
 
 <script>
 import Search from "@/components/Search.vue";
-import Select from "@/components/Select.vue";
+import MySelect from "@/components/MySelect.vue";
 
 export default {
   name: "CardHeader",
@@ -33,7 +33,7 @@ export default {
     }
   },
   components: {
-    Select,
+    MySelect,
     Search
   }
 }

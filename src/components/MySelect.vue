@@ -13,7 +13,7 @@
 import moment from "moment";
 
 export default {
-  name: "Select",
+  name: "MySelect",
   props:{
     episodes: {
       type: Array,
