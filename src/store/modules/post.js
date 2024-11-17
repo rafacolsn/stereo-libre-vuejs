@@ -1,5 +1,5 @@
-import {colors} from "@/utils/colors";
-import {categories, excludedCategories} from "@/utils/categories";
+import { colors, getColorById } from "@/utils/colors";
+import { categories, excludedCategories } from "@/utils/categories";
 
 const getDefaultState = () => {
     return {
@@ -62,25 +62,34 @@ export default {
         },
     },
     actions: {
+        async getImage(context, mediaId) {
+            // Fetch the featured media
+            const mediaResponse = await fetch(`${baseUrl}/media/${mediaId}`);
+            return await mediaResponse.json();
+        },
+        async formatPodcast(context, post) {
+            let data = { ...post };
+            const image = await context.dispatch("getImage", post.featured_media);
+            data.imageUrl = image.source_url;
+            const categoryId = post.categories.find(categoryId => !excludedCategories.includes(categoryId));
+            data.category = context.getters.getCategoryById(categoryId);
+            return data;
+        },
         async getEpisode(context, id) {
             try {
                 context.commit("setLoading", true);
                 const postResponse = await fetch(`${baseUrl}/posts/${id}`);
-                const post = await postResponse.json();
+                let post = await postResponse.json();
+
+                // Format the podcast
+                post = await context.dispatch("formatPodcast", post);
                 context.commit("setEpisode", post);
 
-                // Fetch the featured media
-                const mediaResponse = await fetch(`${baseUrl}/media/${post.featured_media}`);
-                const media = await mediaResponse.json();
-                context.commit("setImage", media);
-
-                // a post has 2 categories, has we don't want the 6th (Episodes)
+                // Set category and color
                 const categoryId = post.categories.find(categoryId => categoryId !== categories.EPISODES);
                 const category = context.getters.getCategoryById(categoryId);
-                const color = context.getters.getColorById(categoryId)[categoryId];
-
                 context.commit('setCategory', category);
-                context.commit('setColor', color);
+                context.commit('setColor', getColorById(categoryId));
             } catch (error) {
                 console.error("Failed to fetch episode data:", error);
             } finally {
@@ -91,7 +100,10 @@ export default {
             try {
                 context.commit("setLoading", true);
                 const response = await fetch(`${baseUrl}/posts/?categories=${categories.EPISODES}&per_page=48`);
-                const data = await response.json();
+                let data = await response.json();
+
+                // Format all episodes
+                data = await Promise.all(data.map(post => context.dispatch("formatPodcast", post)));
                 context.commit("setLastEpisodes", data);
             } catch (error) {
                 console.error('Error fetching last episodes:', error);
@@ -104,14 +116,18 @@ export default {
                 context.commit("setLoading", true);
                 context.commit("setList", []);
 
-                const categories = context.state.categories.filter(cat => !excludedCategories.includes(cat.id));
-                const fetchPromises = categories.map(cat =>
+                const filteredCategories = context.state.categories.filter(cat => !excludedCategories.includes(cat.id));
+                const fetchPromises = filteredCategories.map(cat =>
                     fetch(`${baseUrl}/posts/?categories=${cat.id}&per_page=100`)
                         .then(response => response.json())
                 );
 
                 const results = await Promise.all(fetchPromises);
-                results.flat().forEach(item => context.commit('pushList', item));
+                let formattedResults = await Promise.all(results.flat().map(post => context.dispatch("formatPodcast", post)));
+
+                formattedResults.forEach((item) => {
+                    context.commit('pushList', item);
+                });
             } catch (error) {
                 console.error('Error fetching posts:', error);
             } finally {
@@ -125,9 +141,12 @@ export default {
             context.commit("setLoading", true);
             try {
                 context.commit('setCategory', context.getters.getCategoryById(parseInt(id)));
-                context.commit('setColor', colors.id);
+                context.commit('setColor', getColorById(parseInt(id)));
                 const response = await fetch(`${baseUrl}/posts/?categories=${id}&per_page=48`);
-                const data = await response.json();
+                let data = await response.json();
+
+                // Format all posts by category
+                data = await Promise.all(data.map(post => context.dispatch("formatPodcast", post)));
                 context.commit("setPostsByCategories", data);
             } catch (error) {
                 console.error('Error fetching posts by category ID:', error);
@@ -147,23 +166,20 @@ export default {
     },
     getters: {
         getCategoryById: (state) => (id) => {
-            return state.categories.find(category => category.id === id)
-        },
-        getColorById: (state) => (id) => {
-            return state.colors.find(color => color[id])
+            return state.categories.find(category => category.id === id);
         },
         filteredCategories(state) {
-            return state.categories.filter(cat => !excludedCategories.includes(cat.id))
+            return state.categories.filter(cat => !excludedCategories.includes(cat.id));
         },
         sortedEpisodesByCategory(state) {
             return state.postsByCategories.sort((a, b) => {
-                return new Date(b.date.valueOf()) - new Date(a.date.valueOf())
-            })
+                return new Date(b.date.valueOf()) - new Date(a.date.valueOf());
+            });
         },
         sortedLastEpisodes(state) {
             if (state.lastEpisodes) {
                 return state.lastEpisodes.sort((a, b) => {
-                    return new Date(b.date.valueOf()) - new Date(a.date.valueOf())
+                    return new Date(b.date.valueOf()) - new Date(a.date.valueOf());
                 });
             }
             return [];
@@ -177,4 +193,4 @@ export default {
             return [];
         }
     }
-}
+};

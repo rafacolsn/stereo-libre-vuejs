@@ -1,11 +1,11 @@
 <template>
-  <router-link :to="'/episode/'+post.id">
-    <div v-if="! loading" class="card">
-      <div class="tag" :style="'background:' + color">
-        <router-link :to="'/category/'+category.id">{{ tag }}</router-link>
+  <router-link v-if="post" :to="'/episode/'+post.id">
+    <div class="card">
+      <div class="tag" :style="'background:' + color+';'">
+        <router-link :to="'/category/'+post.category.id">{{ tag }}</router-link>
       </div>
       <div class="img_wrapper">
-        <img v-if="image" :src="imageUrl" :alt="post.title.rendered" class="image">
+        <img v-if="post.imageUrl" :src="post.imageUrl" :alt="post.title.rendered" class="image">
       </div>
       <h4 :style="'color:' + color" v-html="title.replace(/(&RSQUO);/g, '\'')"></h4>
       <div class="postData">{{ postData }}</div>
@@ -16,7 +16,8 @@
 
 <script>
 import moment from 'moment';
-import {mapGetters} from 'vuex';
+import {mapState} from 'vuex';
+import {getColorById} from "@/utils/colors";
 
 export default {
   name: "Card",
@@ -27,51 +28,23 @@ export default {
     }
   },
   data() {
-    return {
-      loading: false,
-      image: {},
-      category: {
-        name: null
-      },
-      color: null
-    }
+    return {}
   },
   computed: {
-    ...mapGetters('post', ['getCategoryById', 'getColorById']),
+    ...mapState('post', ['loading']),
     title() {
       return this.post.title.rendered.toUpperCase();
     },
     postData() {
-      return moment(this.post.date).format('DD MMMM YYYY') + ' | ' + this.category.name
+      return moment(this.post.date).format('DD MMMM YYYY') + ' | ' + this.post.category.name
     },
     tag() {
-      return (this.category.name).toUpperCase()
+      return (this.post.category.name).toUpperCase()
     },
-    imageUrl() {
-      return this.image.source_url;
-      //
-      // return this.image.media_details.sizes.medium_large ?
-      //     this.image.media_details.sizes.medium_large.source_url :
-      //     this.image.media_details.sizes.full.source_url
+    color() {
+      return getColorById(this.post.category.id);
     },
   },
-  created() {
-    this.loading = true
-    // a post has 2 categories, we get the 6th (Episodes) only if it's the only one
-    const id = this.post.categories.find(id => id !== 6) === undefined ?
-        this.post.categories.find(id => id === 6) :
-        this.post.categories.find(id => id !== 6);
-    this.category = this.getCategoryById(id)
-    this.color = this.getColorById(id)[id] + ';';
-
-
-    fetch(`https://admin.stereolibre.be/wp-json/wp/v2/media/${this.post.featured_media}`).then(resp => {
-      resp.json().then(r => {
-        this.image = r
-        this.loading = false
-      })
-    })
-  }
 }
 </script>
 
