@@ -94,7 +94,7 @@ export default {
             }
         },
         async getLastEpisodes(context) {
-            if (this.lastEpisodes.length > 1) {
+            if (this.lastEpisodes?.length > 1) {
                 return;
             }
             try {
