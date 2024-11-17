@@ -2,7 +2,7 @@
   <div class="content wrapper">
     <div v-if="loading" class="loading">
       Un moment svp, ça arrive... :)
-      <pulse-loader :color="color || '#899499'"></pulse-loader>
+      <pulse-loader :color="color"></pulse-loader>
     </div>
     <template v-else>
       <card-header :episodes="sortedEpisodesByCategory" with-select
@@ -40,7 +40,7 @@ export default {
       return (this.episode.category.name).toUpperCase()
     },
     color() {
-      if (!this.episode) {
+      if (this.loading) {
         return '#899499'
       }
       return getColorById(this.episode?.category?.id);
