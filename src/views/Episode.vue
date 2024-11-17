@@ -1,6 +1,6 @@
 <template>
   <div class="content wrapper">
-    <card-header :episodes="sortedEpisodesByCategory"
+    <card-header :episodes="sortedEpisodesByCategory" with-select
                  :title="episode.title.rendered.toUpperCase().replace(/(&RSQUO);/g, '\'')" :post-data="postData"
                  :style="'border-bottom: 1rem solid ' + color"></card-header>
     <div class="tag" :style="'background:' + color +';'">
