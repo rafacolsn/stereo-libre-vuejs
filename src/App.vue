@@ -28,7 +28,6 @@ export default {
   async created() {
     moment.locale('fr');
     await this.$store.dispatch('post/getCategories');
-    await this.$store.dispatch('post/getEpisodes');
     await this.$store.dispatch('post/getAll');
   }
 }

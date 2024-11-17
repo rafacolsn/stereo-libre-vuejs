@@ -3,7 +3,7 @@
     <h4 v-html="title"></h4>
     <p v-if="postData" class="postData">{{ postData }}</p>
     <Search v-if="withSearch"></Search>
-    <Select v-if="withSelect"></Select>
+    <Select :episodes="episodes" v-if="withSelect"></Select>
   </div>
 </template>
 
@@ -19,6 +19,10 @@ export default {
       default: "NOS PODCASTS"
     },
     postData: String,
+    episodes: {
+      type: Array,
+      required: true
+    },
     withSearch: {
       type: Boolean,
       default: false
@@ -26,11 +30,6 @@ export default {
     withSelect: {
       type: Boolean,
       default: false
-    }
-  },
-  data() {
-    return {
-      showModal: false,
     }
   },
   components: {

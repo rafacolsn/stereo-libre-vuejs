@@ -1,39 +1,31 @@
 <template>
   <div class="txt">
-    <select v-if="sortedList" name="list" id="list" @change="redirect($event)" :value="defaultId">
+    <select v-if="sortedList" name="list" id="list" @change="redirect($event)">
       <option v-for="post in sortedList" :value="post.id" :key="'select_'+post.id">
         <span v-html="post.title.rendered"></span> -
-        <span style="color: #828282; font-size: small">{{ format(post.date) }} -
-          {{ getCategory(post).name }}
-        </span>
+        <span style="color: #828282; font-size: small">{{ format(post.date) }}</span>
       </option>
     </select>
   </div>
 </template>
 
 <script>
-import {mapGetters, mapState} from "vuex";
 import moment from "moment";
 
 export default {
   name: "Select",
+  props:{
+    episodes: {
+      type: Array,
+      required: true
+    }
+  },
   computed: {
-    ...mapState('post', ['list', 'postsByCategories']),
-    ...mapGetters('post', ["getCategoryById"]),
     sortedList() {
       // eslint-disable-next-line vue/no-side-effects-in-computed-properties
-      return this.list.sort((a, b) => {
+      return this.episodes.sort((a, b) => {
         return new Date(b.date.valueOf()) - new Date(a.date.valueOf())
       })
-    },
-    defaultId() {
-      if (this.$route.name === 'category') {
-        return this.postsByCategories[0].id;
-      }
-      if (this.$route.params.id) {
-        return this.$route.params.id;
-      }
-      return this.sortedList[0].id
     }
   },
   methods: {
@@ -43,14 +35,6 @@ export default {
     format(date) {
       return moment(date).format('DD MMMM YYYY')
     },
-    getCategory(post) {
-      let id = post.categories.find(id => id !== 6) === undefined ?
-          post.categories.find(id => id === 6) :
-          post.categories.find(id => id !== 6);
-      return this.getCategoryById(id)
-    }
-  },
-  async created() {
   }
 }
 </script>

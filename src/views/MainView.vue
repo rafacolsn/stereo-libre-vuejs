@@ -1,6 +1,6 @@
 <template>
   <div class="content">
-    <card-header title="NOS PODCASTS" with-search></card-header>
+    <card-header :episodes="podcasts" title="NOS PODCASTS" with-search></card-header>
     <div v-if="loading" class="loading">
       Un moment svp, ça arrive... :)
       <pulse-loader color="#E09900"></pulse-loader>
@@ -21,15 +21,15 @@ export default {
   name: "MainView",
   computed: {
     ...mapState("post", ["loading", 'searchQuery']),
-    ...mapGetters("post", ['filteredPodcasts', "sortedPodcasts"]),
+    ...mapGetters("post", ['filteredPodcasts', "sortedLastEpisodes"]),
     podcasts() {
-      return this.searchQuery ? this.filteredPodcasts : this.sortedPodcasts;
+      return this.searchQuery ? this.filteredPodcasts : this.sortedLastEpisodes;
     },
   },
   methods: {},
-  async created() {
-    await this.$store.dispatch("post/getEpisodes");
+  async mounted() {
     this.$store.commit("post/setSearchQuery", '')
+    await this.$store.dispatch('post/getLastEpisodes');
   },
   components: {
     Card,

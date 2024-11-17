@@ -1,34 +1,27 @@
+import {colors} from "@/utils/colors";
+import {categories, excludedCategories} from "@/utils/categories";
+
 const getDefaultState = () => {
     return {
         loading: false,
         filtered: false,
-        post: {},
+        episode: {},
         image: {},
         category: {
             name: null
         },
         color: null,
-        posts: [],
+        lastEpisodes: [],
         list: [],
         categories: [],
-        colors: [
-            {6: '#899499'}, // episodes
-            {12: '#008BE2'}, // artistes
-            {7: '#2ca88b'}, // cinéma
-            {14: '#846700'}, // courant musical
-            {10: '#E09900'}, // Découvertes
-            {15: '#0C71C3'}, // Instruments
-            {16: '#8300E9'}, // Labels
-            {11: '#FFE121'}, // Live
-            {13: '#1d8920'}, // Thème
-            {8: '#af3832'}, // Vintage
-            {9: '#d650d0'} // Voyages
-        ],
+        colors: colors,
         lastPostByCategories: [],
         postsByCategories: [],
         searchQuery: ''
     };
 };
+
+const baseUrl = "https://admin.stereolibre.be/wp-json/wp/v2";
 
 export default {
     namespaced: true,
@@ -37,8 +30,8 @@ export default {
         setLoading(state, value) {
             state.loading = value;
         },
-        setPost(state, value) {
-            state.post = value;
+        setLastEpisodes(state, value) {
+            state.lastEpisodes = value;
         },
         setList(state, value) {
             state.list = value;
@@ -55,8 +48,8 @@ export default {
         setColor(state, value) {
             state.color = value;
         },
-        setPosts(state, value) {
-            state.posts = value;
+        setEpisode(state, value) {
+            state.episode = value;
         },
         setCategories(state, value) {
             state.categories = value
@@ -64,108 +57,95 @@ export default {
         setPostsByCategories(state, value) {
             state.postsByCategories = value
         },
-        setLastPostByCategories(state, value) {
-            state.lastPostByCategories.push(value)
-        },
-        resetLastPostByCategories(state) {
-            state.lastPostByCategories = [];
-        },
         setSearchQuery(state, value) {
             state.searchQuery = value;
         },
     },
     actions: {
         async getEpisode(context, id) {
-            context.commit("setLoading", true)
-            await fetch(`https://admin.stereolibre.be/wp-json/wp/v2/posts/${id}`).then(resp => {
-                resp.json().then(r => {
-                    context.commit("setPost", r)
-                    fetch(`https://admin.stereolibre.be/wp-json/wp/v2/media/${context.state.post.featured_media}`).then(resp => {
-                        resp.json().then(r => {
-                            context.commit("setImage", r)
-                            let id = 6;
-                            // a post has 2 categories, has we don't want the 6th (Episodes)
-                            id = context.state.post.categories.find(id => id !== 6);
-                            context.commit('setCategory', context.getters.getCategoryById(id))
-                            context.commit('setColor', context.getters.getColorById(id)[id]);
-                            context.commit("setLoading", false)
-                        })
-                    })
-                })
-            })
+            try {
+                context.commit("setLoading", true);
+                const postResponse = await fetch(`${baseUrl}/posts/${id}`);
+                const post = await postResponse.json();
+                context.commit("setEpisode", post);
 
+                // Fetch the featured media
+                const mediaResponse = await fetch(`${baseUrl}/media/${post.featured_media}`);
+                const media = await mediaResponse.json();
+                context.commit("setImage", media);
 
+                // a post has 2 categories, has we don't want the 6th (Episodes)
+                const categoryId = post.categories.find(categoryId => categoryId !== categories.EPISODES);
+                const category = context.getters.getCategoryById(categoryId);
+                const color = context.getters.getColorById(categoryId)[categoryId];
+
+                context.commit('setCategory', category);
+                context.commit('setColor', color);
+            } catch (error) {
+                console.error("Failed to fetch episode data:", error);
+            } finally {
+                context.commit("setLoading", false);
+            }
         },
-        async getEpisodes(context, category = 6, number = 48) {
-            context.commit("setLoading", true)
-            return await fetch('https://admin.stereolibre.be/wp-json/wp/v2/posts/?categories=' + category + '&per_page=' + number)
-                .then(resp => {
-                    resp.json().then(r => {
-                        context.commit("setPosts", r)
-                        context.commit("setLoading", false)
-                    })
-                })
-
+        async getLastEpisodes(context) {
+            try {
+                context.commit("setLoading", true);
+                const response = await fetch(`${baseUrl}/posts/?categories=${categories.EPISODES}&per_page=48`);
+                const data = await response.json();
+                context.commit("setLastEpisodes", data);
+            } catch (error) {
+                console.error('Error fetching last episodes:', error);
+            } finally {
+                context.commit("setLoading", false);
+            }
         },
         async getAll(context) {
-            context.commit("setLoading", true)
-            context.commit("setList", [])
+            try {
+                context.commit("setLoading", true);
+                context.commit("setList", []);
 
-            let categories = context.state.categories.filter(cat => ![1, 6, 25].includes(cat.id));
-            categories.forEach(async cat => await fetch('https://admin.stereolibre.be/wp-json/wp/v2/posts/?categories=' + cat.id + '&per_page=100')
-                .then(resp => {
-                    resp.json().then(r => {
-                        r.map(item => context.commit('pushList', item));
-                    })
-                    // context.commit("setPost", context.state.list[0])
-                }));
+                const categories = context.state.categories.filter(cat => !excludedCategories.includes(cat.id));
+                const fetchPromises = categories.map(cat =>
+                    fetch(`${baseUrl}/posts/?categories=${cat.id}&per_page=100`)
+                        .then(response => response.json())
+                );
 
-            context.commit("setLoading", false)
-
-        },
-        switchFilteredPosts(context, id) {
-            context.commit("setLoading", true)
-            context.dispatch("getPostsByCategoryId", id)
-            context.commit("setLoading", false)
-        },
-        async getOnePostByCategoryId(context, id) {
-            context.commit("setLoading", true)
-            await fetch(`https://admin.stereolibre.be/wp-json/wp/v2/posts/?categories=${id}&per_page=1`).then(resp => {
-                resp.json().then(r => {
-                    context.commit("setLastPostByCategories", r[0])
-                    context.commit("setLoading", false)
-                })
-            })
+                const results = await Promise.all(fetchPromises);
+                results.flat().forEach(item => context.commit('pushList', item));
+            } catch (error) {
+                console.error('Error fetching posts:', error);
+            } finally {
+                context.commit("setLoading", false);
+            }
         },
         async getPostsByCategoryId(context, id) {
-            context.commit("setLoading", true)
-            return await fetch(`https://admin.stereolibre.be/wp-json/wp/v2/posts/?categories=${id}&per_page=48`).then(resp => {
-                resp.json().then(r => {
-                    context.commit("setPostsByCategories", r)
-                    context.commit('setPosts', context.state.postsByCategories);
-                    context.commit("setLoading", false)
-                })
-            })
-
+            if (context.state.category && context.state.category.id === id) {
+                return;
+            }
+            context.commit("setLoading", true);
+            try {
+                context.commit('setCategory', context.getters.getCategoryById(parseInt(id)));
+                context.commit('setColor', colors.id);
+                const response = await fetch(`${baseUrl}/posts/?categories=${id}&per_page=48`);
+                const data = await response.json();
+                context.commit("setPostsByCategories", data);
+            } catch (error) {
+                console.error('Error fetching posts by category ID:', error);
+            } finally {
+                context.commit("setLoading", false);
+            }
         },
         async getCategories(context) {
-            let response = await fetch("https://admin.stereolibre.be/wp-json/wp/v2/categories?per_page=100");
-            context.commit('setCategories', await response.json())
-        },
-        async getOnePostPerCategories(context) {
-            context.commit('resetLastPostByCategories');
-            context.commit("setLoading", true)
-
-            let categories = context.state.categories.filter(cat => ![1, 6, 25].includes(cat.id));
-            categories.forEach(cat => context.dispatch("getOnePostByCategoryId", cat.id))
-            context.commit('setPosts', context.state.lastPostByCategories)
-            context.commit("setLoading", false)
+            try {
+                const response = await fetch(`${baseUrl}/categories?per_page=100`);
+                const data = await response.json();
+                context.commit('setCategories', data);
+            } catch (error) {
+                console.error('Error fetching categories:', error);
+            }
         },
     },
     getters: {
-        getPostById: (state) => (id) => {
-            return state.posts.find(post => post.id === id)
-        },
         getCategoryById: (state) => (id) => {
             return state.categories.find(category => category.id === id)
         },
@@ -173,18 +153,20 @@ export default {
             return state.colors.find(color => color[id])
         },
         filteredCategories(state) {
-            // 1 = uncategorized, 6 = episodes, 25 = trailer
-            return state.categories.filter(cat => ![1, 6, 25].includes(cat.id))
+            return state.categories.filter(cat => !excludedCategories.includes(cat.id))
         },
-        sortedList(state) {
-            return state.list.sort((a, b) => {
+        sortedEpisodesByCategory(state) {
+            return state.postsByCategories.sort((a, b) => {
                 return new Date(b.date.valueOf()) - new Date(a.date.valueOf())
             })
         },
-        sortedPodcasts(state) {
-            return state.posts.sort((a, b) => {
-                return new Date(b.date.valueOf()) - new Date(a.date.valueOf())
-            })
+        sortedLastEpisodes(state) {
+            if (state.lastEpisodes) {
+                return state.lastEpisodes.sort((a, b) => {
+                    return new Date(b.date.valueOf()) - new Date(a.date.valueOf())
+                });
+            }
+            return [];
         },
         filteredPodcasts(state) {
             if (state.searchQuery) {

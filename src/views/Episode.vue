@@ -1,25 +1,14 @@
 <template>
   <div class="content wrapper">
-    <card-header with-select :title="post.title.rendered.toUpperCase().replace(/(&RSQUO);/g, '\'')" :post-data="postData" :style="'border-bottom: 1rem solid ' + color"></card-header>
-<!--    <div class="card-header">-->
-<!--      <h4 v-html="post.title.rendered"></h4>-->
-<!--      <p class="postData">{{ postData }}</p>-->
-<!--      <div class="navigation">-->
-<!--        <div v-if="!getPrev.id">&nbsp;</div>-->
-<!--        <router-link v-if="getPrev.id" :to="'/episode/' + getPrev.id">&lt;&nbsp;<span-->
-<!--            v-html="getPrev.title.rendered"></span></router-link>-->
-<!--        <router-link v-if="getNext.id" :to="'/episode/' + getNext.id"><span v-html="getNext.title.rendered"></span>&nbsp;&gt;-->
-<!--        </router-link>-->
-<!--      </div>-->
-<!--    </div>-->
+    <card-header :episodes="sortedEpisodesByCategory" with-select :title="episode.title.rendered.toUpperCase().replace(/(&RSQUO);/g, '\'')" :post-data="postData" :style="'border-bottom: 1rem solid ' + color"></card-header>
     <div class="tag" :style="'background:' + color +';'">
       <router-link :to="'/category/'+category.id">{{ tag }}</router-link>
     </div>
     <div class="data">
       <div v-if="! loading" class="img_wrapper">
-        <img :src="imageUrl" :alt="post.title.rendered" class="image">
+        <img :src="imageUrl" :alt="episode.title.rendered" class="image">
       </div>
-      <div class="text" v-html="post.content.rendered"></div>
+      <div class="text" v-html="episode.content.rendered"></div>
     </div>
   </div>
 </template>
@@ -32,10 +21,10 @@ import CardHeader from "@/components/CardHeader";
 export default {
   name: "Episode",
   computed: {
-    ...mapState('post', ['posts', 'post', 'image', 'category', 'color', 'loading']),
-    ...mapGetters('post', ["getPostById", "getColorById", "getCategoryById"]),
+    ...mapState('post', ['episode', 'image', 'category', 'color', 'loading']),
+    ...mapGetters('post', ["sortedEpisodesByCategory"]),
     postData() {
-      return moment(this.post.date).format('DD MMMM YYYY')
+      return moment(this.episode.date).format('DD MMMM YYYY')
     },
     tag() {
       return (this.category.name).toUpperCase()
@@ -47,31 +36,14 @@ export default {
       //     this.image.media_details.sizes.medium_large.source_url :
       //     this.image.media_details.sizes.full.source_url;
 
-    },
-    getPrev() {
-      let index = this.posts.map(post => post.id).indexOf(this.post.id);
-      let prevItem = {};
-      if (index > 0 && index <= this.posts.length - 1) {
-        prevItem = this.posts[index - 1]
-      }
-      return prevItem
-    },
-    getNext() {
-      let index = this.posts.map(post => post.id).indexOf(this.post.id);
-      let nextItem = {};
-      if (index >= 0 && index < this.posts.length - 1) {
-        nextItem = this.posts[index + 1]
-      }
-      return nextItem
     }
-
-  },
-  async created() {
-    await this.$store.dispatch('post/getEpisode', parseInt(this.$route.params.id));
   },
   watch: {
-    async $route(to) {
-      await this.$store.dispatch('post/getEpisode', parseInt(to.params.id));
+    '$route.params.id': {
+      handler: async function (value) {
+        await this.$store.dispatch('post/getEpisode',value);
+      },
+      immediate: true
     }
   },
   components: {
