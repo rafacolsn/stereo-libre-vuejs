@@ -40,7 +40,10 @@ export default {
       return (this.episode.category.name).toUpperCase()
     },
     color() {
-      return getColorById(this.episode?.category?.id) || '#899499';
+      if (!this.episode) {
+        return '#899499'
+      }
+      return getColorById(this.episode?.category?.id);
     },
   },
   watch: {
