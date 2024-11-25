@@ -43,9 +43,6 @@ export default {
     date() {
       return moment(this.podcast.date).format('DD MMMM YYYY')
     },
-    podcastData() {
-      return this.podcast ? moment(this.podcast.date).format('DD MMMM YYYY') + ' | ' + this.podcast.category.name : '';
-    },
     tag() {
       return (this.podcast.category.name).toUpperCase()
     },

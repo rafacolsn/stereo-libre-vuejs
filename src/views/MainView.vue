@@ -21,14 +21,6 @@ import {getColorById} from "@/utils/colors";
 
 export default {
   name: "MainView",
-  data() {
-    return {
-      category: {
-        id: 0,
-        name: ''
-      },
-    }
-  },
   computed: {
     ...mapState("post", ["loading", 'searchQuery']),
     ...mapGetters("post", ['filteredPodcasts', 'findCategory', "sortedLastEpisodes", "getCategoryById", "sortedEpisodesByCategory"]),
@@ -48,25 +40,14 @@ export default {
       return this.searchQuery ? this.filteredPodcasts : this.sortedLastEpisodes;
     },
     color() {
-      return getColorById(this.category.id)
+      return getColorById(this.category.id || 0)
+    },
+    category() {
+      return this.findCategory(this.$route.params.id)
     },
   },
   async mounted() {
     this.$store.commit("post/setSearchQuery", '');
-    this.category = this.findCategory(this.$route.params.id)
-  },
-  watch: {
-    '$route.params.id': {
-      handler(categoryId) {
-        if (this.isCategory && this.category.id === categoryId) {
-          return;
-        }
-        if (this.isCategory) {
-          this.category = this.findCategory(categoryId)
-        }
-      },
-      immediate: true
-    }
   },
   components: {
     Card,
