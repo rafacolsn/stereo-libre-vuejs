@@ -13,7 +13,7 @@ export const categories = {
 };
 
 export const excludedCategories = [
-    1, // uncategorized
-    6, // episodes
-    25 // trailer
+    '1', // uncategorized
+    '6', // episodes
+    '25' // trailer
 ]

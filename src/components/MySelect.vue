@@ -1,9 +1,9 @@
 <template>
   <div class="txt">
     <select v-if="episodes" name="list" id="list" @change="redirect($event)">
-      <option v-for="post in episodes" :value="post.id" :key="'select_'+post.id">
-        <span v-html="post.title.rendered"></span> -
-        <span style="color: #828282; font-size: small">{{ format(post.date) }}</span>
+      <option v-for="podcast in episodes" :value="podcast.id" :key="'select_'+podcast.id">
+        <span v-html="podcast.title"></span> -
+        <span style="color: #828282; font-size: small">{{ format(podcast.date) }}</span>
       </option>
     </select>
   </div>

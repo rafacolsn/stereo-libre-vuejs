@@ -5,17 +5,17 @@
       <pulse-loader :color="color"></pulse-loader>
     </div>
     <template v-else>
-      <card-header :episodes="sortedEpisodesByCategory" with-select
-                   :title="episode.title.rendered.toUpperCase().replace(/(&RSQUO);/g, '\'')" :post-data="postData"
+      <card-header :episodes="episodesFromCategory" with-select
+                   :title="podcast.title.toUpperCase().replace(/(&RSQUO);/g, '\'')" :post-data="date"
                    :style="'border-bottom: 1rem solid ' + color"></card-header>
       <div class="tag" :style="'background:' + color +';'">
-        <router-link :to="'/category/'+episode.category.id">{{ tag }}</router-link>
+        <router-link :to="'/category/'+podcast.category.id">{{ tag }}</router-link>
       </div>
       <div class="data">
         <div class="img_wrapper">
-          <img :src="episode.imageUrl" :alt="episode.title.rendered" class="image">
+          <img :src="imageUrl" :alt="podcast.title" class="image">
         </div>
-        <div class="text" v-html="episode.content.rendered"></div>
+        <div class="text" v-html="podcast.content"></div>
       </div>
     </template>
   </div>
@@ -30,29 +30,53 @@ import PulseLoader from 'vue-spinner/src/PulseLoader.vue';
 
 export default {
   name: "Episode",
+  data() {
+    return {
+      podcast: null,
+      imageUrl: null,
+      color: '#899499'
+    }
+  },
   computed: {
-    ...mapState('post', ['episode', 'loading']),
-    ...mapGetters('post', ["sortedEpisodesByCategory"]),
-    postData() {
-      return moment(this.episode.date).format('DD MMMM YYYY')
+    ...mapState('post', ['loading']),
+    ...mapGetters('post', ["findEpisode", 'sortedEpisodesByCategory']),
+    date() {
+      return moment(this.podcast.date).format('DD MMMM YYYY')
+    },
+    podcastData() {
+      return this.podcast ? moment(this.podcast.date).format('DD MMMM YYYY') + ' | ' + this.podcast.category.name : '';
     },
     tag() {
-      return (this.episode.category.name).toUpperCase()
+      return (this.podcast.category.name).toUpperCase()
     },
-    color() {
-      if (this.loading) {
-        return '#899499'
+    episodesFromCategory() {
+      return this.sortedEpisodesByCategory(this.podcast.category.id);
+    },
+  },
+  methods: {
+    updateImageUrl() {
+      if (this.podcast) {
+        this.imageUrl = this.podcast.imageUrl;
+        this.color = getColorById(this.podcast.category.id);
       }
-      return getColorById(this.episode?.category?.id);
-    },
+    }
+  },
+  async created() {
+    this.podcast = this.findEpisode(this.$route.params.id);
+    if (this.podcast && !this.podcast.imageUrl) {
+      await this.$store.dispatch('post/getImage', {episodeId: this.podcast.id, mediaId: this.podcast.mediaId});
+    }
+    this.updateImageUrl();
   },
   watch: {
     '$route.params.id': {
-      handler: async function (value) {
-        await this.$store.dispatch('post/getEpisode', value);
-        await this.$store.dispatch("post/getPostsByCategoryId", this.episode.category.id);
+      handler(newId) {
+        if (newId) {
+          this.podcast = this.findEpisode(newId);
+          this.updateImageUrl();
+        }
       },
-      immediate: true
+      immediate: true,
     }
   },
   components: {

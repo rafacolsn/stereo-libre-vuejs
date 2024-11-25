@@ -4,10 +4,10 @@
                  :style="headerStyle"></card-header>
     <div v-if="loading" class="loading">
       Un moment svp, ça arrive... :)
-      <pulse-loader :color="color || '#899499'"></pulse-loader>
+      <pulse-loader :color="color"></pulse-loader>
     </div>
     <div class="cards" v-else>
-      <Card v-for="podcast in podcasts" :key="'podcast_'+podcast.id" :post="podcast"></Card>
+      <Card v-for="podcast in podcasts" :key="'podcast_'+podcast.id" :podcastId="podcast.id"></Card>
     </div>
   </div>
 </template>
@@ -17,12 +17,21 @@ import Card from '@/components/Card';
 import {mapGetters, mapState} from 'vuex';
 import PulseLoader from 'vue-spinner/src/PulseLoader.vue';
 import CardHeader from "@/components/CardHeader";
+import {getColorById} from "@/utils/colors";
 
 export default {
   name: "MainView",
+  data() {
+    return {
+      category: {
+        id: 0,
+        name: ''
+      },
+    }
+  },
   computed: {
-    ...mapState("post", ["loading", 'searchQuery', 'category', 'color']),
-    ...mapGetters("post", ['filteredPodcasts', "sortedLastEpisodes", "getCategoryById", "sortedEpisodesByCategory"]),
+    ...mapState("post", ["loading", 'searchQuery']),
+    ...mapGetters("post", ['filteredPodcasts', 'findCategory', "sortedLastEpisodes", "getCategoryById", "sortedEpisodesByCategory"]),
     isCategory() {
       return this.$route.name === 'category';
     },
@@ -34,25 +43,26 @@ export default {
     },
     podcasts() {
       if (this.isCategory) {
-        return this.sortedEpisodesByCategory;
+        return this.sortedEpisodesByCategory(this.$route.params.id);
       }
       return this.searchQuery ? this.filteredPodcasts : this.sortedLastEpisodes;
+    },
+    color() {
+      return getColorById(this.category.id)
     },
   },
   async mounted() {
     this.$store.commit("post/setSearchQuery", '');
-    if (!this.isCategory) {
-      await this.$store.dispatch('post/getLastEpisodes');
-    }
+    this.category = this.findCategory(this.$route.params.id)
   },
   watch: {
     '$route.params.id': {
-      handler: async function (value) {
-        if (this.isCategory && this.category.id === value) {
+      handler(categoryId) {
+        if (this.isCategory && this.category.id === categoryId) {
           return;
         }
         if (this.isCategory) {
-          await this.$store.dispatch("post/getPostsByCategoryId", value);
+          this.category = this.findCategory(categoryId)
         }
       },
       immediate: true

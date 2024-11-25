@@ -8,6 +8,7 @@
     "lint": "vue-cli-service lint"
   },
   "dependencies": {
+    "axios": "^1.7.7",
     "core-js": "^3.6.5",
     "grunt-contrib-sass": "^2.0.0",
     "moment": "^2.29.1",
