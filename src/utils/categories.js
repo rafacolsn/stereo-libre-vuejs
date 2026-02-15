@@ -15,5 +15,7 @@ export const categories = {
 export const excludedCategories = [
     '1', // uncategorized
     '6', // episodes
-    '25' // trailer
+    '25', // trailer
+    '500', // espace animateur
+    '503' // espace invites
 ]
