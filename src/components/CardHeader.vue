@@ -21,7 +21,7 @@ export default {
     postData: String,
     episodes: {
       type: Array,
-      required: true
+      required: false
     },
     withSearch: {
       type: Boolean,

@@ -21,7 +21,10 @@
 
       </li>
       <li :class="zoom">
-        <router-link to="/nous">NOUS</router-link>
+        <router-link to="/history">LE GRENIER</router-link>
+      </li>
+      <li :class="zoom">
+        <router-link to="/us">NOUS</router-link>
       </li>
     </ul>
   </nav>

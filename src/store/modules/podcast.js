@@ -93,13 +93,6 @@ export default {
         },
     },
     getters: {
-        filteredPosts: (state) => (categoryId, searchQuery) => {
-            return state.posts.filter(post => {
-                const matchesCategory = categoryId ? post.categories.includes(categoryId) : true;
-                const matchesSearch = searchQuery ? post.title.rendered.toLowerCase().includes(searchQuery.toLowerCase()) : true;
-                return matchesCategory && matchesSearch;
-            });
-        },
         findEpisode: (state) => (id) => {
             return state.episodes.find(e => e.id == id);
         },

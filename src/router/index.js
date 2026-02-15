@@ -2,6 +2,7 @@ import Vue from "vue";
 import VueRouter from "vue-router";
 import Episode from "@/views/Episode";
 import MainView from "@/views/MainView.vue";
+import History from "@/views/History";
 // import Category from "@/views/Category";
 import Us from "@/views/Us";
 
@@ -17,8 +18,8 @@ const router = new VueRouter({
             component: MainView,
         },
         {
-            path: '/nous',
-            name: 'nous',
+            path: '/us',
+            name: 'us',
             component: Us,
         },
         {
@@ -31,6 +32,12 @@ const router = new VueRouter({
             name: 'category',
             component: MainView,
         },
+        {
+            path: '/history',
+            name: 'history',
+            component: History,
+        },
+
     ]
 })
 export default router;
