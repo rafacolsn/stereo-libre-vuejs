@@ -39,7 +39,11 @@ export default {
         require('@/assets/IMG_9772.jpg'),
         require('@/assets/IMG_9783.jpg'),
         require('@/assets/IMG_9828.jpg'),
-      ]
+        // require('@/assets/SL a trois 01.jpg'),
+        // require('@/assets/SL a trois 02.jpg'),
+        // require('@/assets/SL a trois 03.jpg'),
+        // require('@/assets/SL a trois 04.jpg'),
+      ];
       return `${images[Math.floor(Math.random() * images.length)]}`;
     },
     typeWriter() {
