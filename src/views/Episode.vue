@@ -23,6 +23,7 @@
       </div>
 
       <div class="episode-body">
+        <audio-player v-if="audioSrc" :src="audioSrc" :color="color" />
         <div class="episode-content" v-html="podcast.content"></div>
       </div>
     </template>
@@ -33,6 +34,7 @@
 import {mapGetters, mapState} from "vuex";
 import moment from "moment";
 import MySelect from "@/components/MySelect";
+import AudioPlayer from "@/components/AudioPlayer";
 import {getColorById} from "@/utils/colors";
 import PulseLoader from 'vue-spinner/src/PulseLoader.vue';
 
@@ -59,6 +61,11 @@ export default {
     },
     episodesFromCategory() {
       return this.sortedEpisodesByCategory(this.podcast.category.id);
+    },
+    audioSrc() {
+      if (!this.podcast?.content) return null;
+      const match = this.podcast.content.match(/src="([^"]+\.mp3[^"]*)"/);
+      return match ? match[1] : null;
     },
     heroStyle() {
       return this.imageUrl
@@ -94,6 +101,7 @@ export default {
   },
   components: {
     MySelect,
+    AudioPlayer,
     PulseLoader
   }
 }
@@ -229,11 +237,10 @@ h1 {
     margin-bottom: 1.2rem;
   }
 
-  ::v-deep .powerpress_player {
-    margin: 2rem 0;
-    background: #f3f3f3;
-    border-radius: 10px;
-    padding: 1rem;
+  ::v-deep .powerpress_player,
+  ::v-deep .wp-audio-shortcode,
+  ::v-deep audio {
+    display: none;
   }
 
   ::v-deep a {
