@@ -107,7 +107,7 @@ export default {
         },
         sortedLastEpisodes(state) {
             if (state.episodes) {
-                return sortByDates(state.episodes).slice(0, 48)
+                return sortByDates([...state.episodes]).slice(0, 48)
             }
             return [];
         },

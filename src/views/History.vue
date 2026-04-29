@@ -45,7 +45,7 @@ export default {
   },
   mounted() {
     if (this.episodes.length === 0) {
-      this.$store.dispatch('podcast/getAll');
+      this.$store.dispatch('post/getAll');
     }    
     this.$store.commit("post/setSearchQuery", '');
   }

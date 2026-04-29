@@ -14,5 +14,5 @@ const colors = [
 
 export function getColorById(id) {
     const item = colors.find(c => c.id === id);
-    return item.color || "#899499"
+    return item ? item.color : "#899499"
 }
