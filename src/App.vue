@@ -144,6 +144,7 @@ table {
   left: 0;
   padding: .3rem 1rem .3rem 2rem;
   border-radius: 0 5px 5px 0;
+  z-index: 1;
 
   a {
     color: white;

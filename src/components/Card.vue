@@ -6,7 +6,7 @@
       </div>
       <div class="img_wrapper">
         <img :src="imageUrl" v-if="imageUrl" :alt="podcast.title" class="image">
-        <pulse-loader v-else :color="color || '#899499'" style="float: right; padding-right: 1rem"></pulse-loader>
+        <pulse-loader v-else :color="color || '#899499'" style="position: absolute; top: 50%; right: 1rem; transform: translateY(-50%)"></pulse-loader>
       </div>
 
       <h4 :style="'color:' + color" v-html="title.replace(/(&RSQUO);/g, '\'')"></h4>
@@ -86,15 +86,23 @@ export default {
 
 <style lang="scss" scoped>
 .card {
-  max-width: 20rem;
+  width: 20rem;
+  flex: 0 0 20rem;
+  display: flex;
+  flex-direction: column;
   background: white;
   border-radius: 10px;
   padding: 2rem;
   filter: drop-shadow(0 0 0.75rem #b8b8b8);
   margin: 2rem;
-  flex-basis: 25%;
   position: relative;
   text-align: left;
+  transition: transform 0.2s ease, filter 0.2s ease;
+
+  &:hover {
+    transform: scale(1.03);
+    filter: drop-shadow(0 0 1.25rem #999);
+  }
 }
 
 h4 {
@@ -105,18 +113,24 @@ h4 {
   margin-bottom: 1rem;
 }
 
+.text {
+  flex: 1;
+}
+
 .img_wrapper {
-  min-height: 10rem;
-  max-height: 20rem;
-  width: 20rem;
+  position: relative;
+  width: 100%;
+  padding-top: 100%;
   overflow: hidden;
   border-radius: 10px;
 }
 
 .image {
-  //min-width: 100%;
-  max-width: 100%;
-  //min-height: 100%;
-  max-height: 100%;
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
 }
 </style>
