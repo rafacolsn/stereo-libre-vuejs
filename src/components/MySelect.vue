@@ -1,6 +1,6 @@
 <template>
   <div class="txt">
-    <select v-if="episodes" name="list" id="list" @change="redirect($event)">
+    <select v-if="episodes" name="list" id="list" :value="currentId" @change="redirect($event)">
       <option v-for="podcast in episodes" :value="podcast.id" :key="'select_'+podcast.id">
         <span v-html="podcast.title"></span> -
         <span style="color: #828282; font-size: small">{{ format(podcast.date) }}</span>
@@ -18,6 +18,10 @@ export default {
     episodes: {
       type: Array,
       required: true
+    },
+    currentId: {
+      type: [String, Number],
+      default: null
     }
   },
   methods: {

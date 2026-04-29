@@ -4,16 +4,16 @@
 
     <div class="episodes-list">
       <div class="episodes-grid">
-        <div v-for="episode in podcasts" :key="episode.id" class="episode-card">
+        <div v-for="episode in podcasts" :key="episode.id" class="episode-card" :style="{ borderLeft: '4px solid ' + getColor(episode) }">
           <router-link :to="{ name: 'episode', params: { id: episode.id } }">
             <div class="episode-content">
               <div class="date-block">
                 <span class="date-text">{{ new Date(episode.date).toLocaleDateString('fr-FR', { day: '2-digit', month: 'short', year: 'numeric' }) }}</span>
               </div>
-              <div class="separator"></div>
+              <div class="separator" :style="{ backgroundColor: getColor(episode) }"></div>
               <div class="content-block">
                 <h3 v-html="episode.title"></h3>
-                <p class="episode-category">{{ episode.category?.name || 'Unknown' }}</p>
+                <p class="episode-category" :style="{ color: getColor(episode) }">{{ episode.category?.name || 'Unknown' }}</p>
               </div>
             </div>
           </router-link>
@@ -27,11 +27,17 @@
 
 import CardHeader from "@/components/CardHeader";
 import { mapState, mapGetters } from 'vuex';
+import { getColorById } from "@/utils/colors";
 
 export default {
   name: "History",
   components: {
     CardHeader
+  },
+  methods: {
+    getColor(episode) {
+      return episode.category ? getColorById(episode.category.id) : '#899499';
+    }
   },
   computed: {
     ...mapState('post', ['episodes', "loading", 'searchQuery']),
@@ -113,7 +119,6 @@ a {
 
 .episode-card {
   background-color: #fff;
-  border: 1px solid #e0e0e0;
   border-radius: 12px;
   box-shadow: 0 4px 8px rgba(0,0,0,0.05);
   overflow: hidden;

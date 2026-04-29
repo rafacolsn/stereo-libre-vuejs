@@ -1,7 +1,7 @@
 <template>
   <div id="app">
     <Menu></Menu>
-    <Header></Header>
+    <Header v-if="$route.name !== 'episode'"></Header>
     <div>
       <router-view></router-view>
     </div>

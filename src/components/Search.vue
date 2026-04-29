@@ -43,8 +43,22 @@ export default {
 .input-wrapper {
   position: relative;
   display: inline-block;
-  input{
+
+  input {
     width: 250px;
+    padding: 0.5rem 2.2rem 0.5rem 0.9rem;
+    border: 1.5px solid #ccc;
+    border-radius: 20px;
+    background: #f3f3f3;
+    font-family: inherit;
+    font-size: 0.95rem;
+    outline: none;
+    transition: border-color 0.2s ease, box-shadow 0.2s ease;
+
+    &:focus {
+      border-color: #555;
+      box-shadow: 0 0 0 3px rgba(0, 0, 0, 0.08);
+    }
   }
 }
 
@@ -55,11 +69,12 @@ export default {
   transform: translateY(-50%);
   cursor: pointer;
   font-size: 18px;
-  color: #ccc;
-}
+  color: #aaa;
+  transition: color 0.15s ease;
 
-.clear-icon:hover {
-  color: #000;
+  &:hover {
+    color: #000;
+  }
 }
 
 .dropdown {

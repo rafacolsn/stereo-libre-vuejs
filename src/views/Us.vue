@@ -105,6 +105,14 @@ export default {
 
 .flex {
   display: flex;
+  border-radius: 10px;
+  overflow: hidden;
+  transition: transform 0.2s ease, box-shadow 0.2s ease;
+
+  &:hover {
+    transform: scale(1.01);
+    box-shadow: 0 8px 24px rgba(0, 0, 0, 0.12);
+  }
 }
 .img {
   background-image: url('../assets/nous-trois.jpg');

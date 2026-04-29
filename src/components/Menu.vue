@@ -96,42 +96,45 @@ nav {
     cursor: pointer;
 
     .subMenu {
-      display: none;
+      display: flex;
+      flex-direction: column;
+      position: absolute;
+      z-index: 99999;
+      filter: drop-shadow(0 0 0.2rem #b8b8b8);
+      opacity: 0;
+      visibility: hidden;
+      transition: opacity 0.2s ease, visibility 0.2s ease;
+
+      & .subElement {
+        background-color: #000000;
+        opacity: .8;
+        color: white;
+        border-bottom: 1px solid white;
+        font-weight: normal;
+        font-size: 15px;
+
+        &:hover {
+          opacity: 1;
+        }
+
+        &:first-child {
+          border-radius: 10px 10px 0 0;
+        }
+
+        &:last-child {
+          border-radius: 0 0 10px 10px;
+        }
+
+        & a {
+          color: white;
+        }
+      }
     }
 
     &:hover {
       .subMenu {
-        display: flex;
-        flex-direction: column;
-        position: absolute;
-        z-index: 99999;
-        filter: drop-shadow(0 0 0.2rem #b8b8b8);
-
-
-        & .subElement {
-          background-color: #000000;
-          opacity: .8;
-          color: white;
-          border-bottom: 1px solid white;
-          font-weight: normal;
-          font-size: 15px;
-
-          &:hover {
-            opacity: 1;
-          }
-
-          &:first-child {
-            border-radius: 10px 10px 0 0;
-          }
-
-          &:last-child {
-            border-radius: 0 0 10px 10px;
-          }
-
-          & a {
-            color: white;
-          }
-        }
+        opacity: 1;
+        visibility: visible;
       }
     }
   }
