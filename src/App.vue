@@ -14,7 +14,7 @@ import Header from './components/Header'
 import moment from "moment";
 import Menu from "@/components/Menu";
 
-const SITE_URL = 'https://stereolibre.be';
+const SITE_URL = 'https://www.stereolibre.be';
 const DEFAULT_DESCRIPTION = "Stéréo Libre, l'émission radio qui explore la musique sans frontières : artistes, découvertes, live, voyages sonores et courants musicaux.";
 
 export default {

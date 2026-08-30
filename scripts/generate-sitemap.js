@@ -4,7 +4,7 @@
 const fs = require('fs');
 const path = require('path');
 
-const SITE_URL = 'https://stereolibre.be';
+const SITE_URL = 'https://www.stereolibre.be';
 const DATA_PATH = path.join(__dirname, '.generated-data.json');
 const OUTPUT_DIR = path.join(__dirname, '..', 'dist');
 
