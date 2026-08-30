@@ -1,6 +1,6 @@
 <template>
   <div class="episode-page">
-    <div v-if="loading" class="loading">
+    <div v-if="loading || !podcast" class="loading">
       Un moment svp, ça arrive... :)
       <pulse-loader :color="color"></pulse-loader>
     </div>
@@ -36,6 +36,7 @@ import moment from "moment";
 import MySelect from "@/components/MySelect";
 import AudioPlayer from "@/components/AudioPlayer";
 import {getColorById} from "@/utils/colors";
+import {htmlToText, truncate} from "@/utils/text";
 import PulseLoader from 'vue-spinner/src/PulseLoader.vue';
 
 export default {
@@ -46,6 +47,21 @@ export default {
       imageUrl: null,
       color: '#899499'
     }
+  },
+  metaInfo() {
+    if (!this.podcast) return {};
+    const plainTitle = htmlToText(this.podcast.title);
+    const description = truncate(htmlToText(this.podcast.excerpt || this.podcast.content));
+    return {
+      title: plainTitle,
+      meta: [
+        {vmid: 'description', name: 'description', content: description},
+        {vmid: 'og:title', property: 'og:title', content: plainTitle},
+        {vmid: 'og:description', property: 'og:description', content: description},
+        {vmid: 'og:type', property: 'og:type', content: 'article'},
+        ...(this.imageUrl ? [{vmid: 'og:image', property: 'og:image', content: this.imageUrl}] : []),
+      ]
+    };
   },
   computed: {
     ...mapState('post', ['loading']),
@@ -82,6 +98,15 @@ export default {
     }
   },
   async created() {
+    // On a cold load (no cached Vuex state - e.g. a crawler or a shared
+    // link landing directly on this route), App's fetch may not have
+    // resolved yet. Wait for it here too, otherwise podcast stays null.
+    if (!this.$store.state.post.categories.length) {
+      await this.$store.dispatch('post/getCategories');
+    }
+    if (!this.$store.state.post.episodes.length) {
+      await this.$store.dispatch('post/getAll');
+    }
     this.podcast = this.findEpisode(this.$route.params.id);
     if (this.podcast && !this.podcast.imageUrl) {
       await this.$store.dispatch('post/getImage', {episodeId: this.podcast.id, mediaId: this.podcast.mediaId});

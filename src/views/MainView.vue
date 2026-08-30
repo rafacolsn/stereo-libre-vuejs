@@ -21,6 +21,21 @@ import {getColorById} from "@/utils/colors";
 
 export default {
   name: "MainView",
+  metaInfo() {
+    if (this.isCategory) {
+      if (!this.category) return {};
+      const name = this.category.name;
+      return {
+        title: name,
+        meta: [
+          {vmid: 'description', name: 'description', content: `Tous les épisodes de Stéréo Libre dans la catégorie ${name}.`},
+          {vmid: 'og:title', property: 'og:title', content: name},
+          {vmid: 'og:description', property: 'og:description', content: `Tous les épisodes de Stéréo Libre dans la catégorie ${name}.`},
+        ]
+      };
+    }
+    return {};
+  },
   computed: {
     ...mapState("post", ["loading", 'searchQuery']),
     ...mapGetters("post", ['filteredPodcasts', 'findCategory', "sortedLastEpisodes", "getCategoryById", "sortedEpisodesByCategory"]),
@@ -28,7 +43,7 @@ export default {
       return this.$route.name === 'category';
     },
     title() {
-      return this.isCategory ? this.category.name.toUpperCase() : "NOS PODCASTS";
+      return this.isCategory ? (this.category?.name || '').toUpperCase() : "NOS PODCASTS";
     },
     headerStyle() {
       return this.isCategory ? `border-bottom: 1rem solid ${this.color}` : ''
@@ -40,7 +55,7 @@ export default {
       return this.searchQuery ? this.filteredPodcasts : this.sortedLastEpisodes;
     },
     color() {
-      return getColorById(this.category.id || 0)
+      return getColorById(this.category?.id || 0)
     },
     category() {
       return this.findCategory(this.$route.params.id)

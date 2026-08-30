@@ -79,6 +79,14 @@ import CardHeader from "@/components/CardHeader";
 
 export default {
   name: "Us",
+  metaInfo: {
+    title: 'Qui sommes-nous ?',
+    meta: [
+      {vmid: 'description', name: 'description', content: "Découvrez l'équipe de Stéréo Libre : Jérôme, Raph et Adri, animateurs de l'émission radio diffusée sur Equinoxe FM."},
+      {vmid: 'og:title', property: 'og:title', content: 'Qui sommes-nous ? · Stéréo Libre'},
+      {vmid: 'og:description', property: 'og:description', content: "Découvrez l'équipe de Stéréo Libre : Jérôme, Raph et Adri, animateurs de l'émission radio diffusée sur Equinoxe FM."},
+    ]
+  },
   components: {
     CardHeader
   }

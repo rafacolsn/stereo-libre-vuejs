@@ -31,6 +31,14 @@ import { getColorById } from "@/utils/colors";
 
 export default {
   name: "History",
+  metaInfo: {
+    title: 'Historique des épisodes',
+    meta: [
+      {vmid: 'description', name: 'description', content: "Tous les épisodes de Stéréo Libre, classés par date, du plus récent au plus ancien."},
+      {vmid: 'og:title', property: 'og:title', content: 'Historique des épisodes'},
+      {vmid: 'og:description', property: 'og:description', content: "Tous les épisodes de Stéréo Libre, classés par date, du plus récent au plus ancien."},
+    ]
+  },
   components: {
     CardHeader
   },

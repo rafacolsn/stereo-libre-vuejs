@@ -14,8 +14,25 @@ import Header from './components/Header'
 import moment from "moment";
 import Menu from "@/components/Menu";
 
+const SITE_URL = 'https://stereolibre.be';
+const DEFAULT_DESCRIPTION = "Stéréo Libre, l'émission radio qui explore la musique sans frontières : artistes, découvertes, live, voyages sonores et courants musicaux.";
+
 export default {
   name: 'App',
+  metaInfo() {
+    return {
+      titleTemplate: chunk => chunk ? `${chunk} · Stéréo Libre` : 'Stéréo Libre — Podcast radio',
+      meta: [
+        {vmid: 'description', name: 'description', content: DEFAULT_DESCRIPTION},
+        {vmid: 'og:site_name', property: 'og:site_name', content: 'Stéréo Libre'},
+        {vmid: 'og:type', property: 'og:type', content: 'website'},
+        {vmid: 'og:url', property: 'og:url', content: SITE_URL + this.$route.path},
+      ],
+      link: [
+        {vmid: 'canonical', rel: 'canonical', href: SITE_URL + this.$route.path},
+      ]
+    }
+  },
   computed: {
     footer() {
       return "Adri, Djé & Raf @ Stéréo Libre - " + moment().format('MMMM Y')
@@ -29,6 +46,11 @@ export default {
     moment.locale('fr');
     await this.$store.dispatch('post/getCategories');
     await this.$store.dispatch('post/getAll');
+    // Signals the prerender script (scripts/prerender.js) that data has
+    // loaded and it's safe to snapshot the page's HTML/meta tags.
+    this.$nextTick(() => {
+      window.__PRERENDER_READY__ = true;
+    });
   }
 }
 </script>

@@ -4,15 +4,19 @@
   "private": true,
   "scripts": {
     "serve": "vue-cli-service serve",
+    "prebuild": "node scripts/fetch-wp-data.js",
     "build": "vue-cli-service build",
+    "postbuild": "node scripts/generate-sitemap.js && node scripts/prerender.js",
     "lint": "vue-cli-service lint"
   },
   "dependencies": {
     "core-js": "^3.6.5",
     "moment": "^2.29.1",
+    "puppeteer": "^25.9.0",
     "sass": "^1.29.0",
     "sass-loader": "^10.1.0",
     "vue": "^2.6.11",
+    "vue-meta": "^2.4.0",
     "vue-mq": "^1.0.1",
     "vue-router": "^3.5.2",
     "vue-spinner": "^1.0.4",

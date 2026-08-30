@@ -4,9 +4,11 @@ import Vuex from 'vuex'
 import store from "./store/";
 import router from "@/router";
 import VueMq from "vue-mq";
+import VueMeta from "vue-meta";
 
 Vue.use(Vuex)
 Vue.config.productionTip = false
+Vue.use(VueMeta)
 Vue.use(VueMq, {
   breakpoints: { // default breakpoints - customize this
     mobile: 900,
