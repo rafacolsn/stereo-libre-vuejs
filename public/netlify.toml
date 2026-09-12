@@ -1,21 +1,14 @@
-[build]
-    command = "npm run build"
-    publish = "/build"
-    base = "/"
-
-[build.environment]
-    # Puppeteer's default cache dir (~/.cache/puppeteer, i.e.
-    # /opt/buildhome/.cache/puppeteer) isn't covered by Netlify's built-in
-    # dependency caching, so it's redirected here and persisted explicitly
-    # via netlify-plugin-cache below to avoid re-downloading Chrome on every
-    # build (the postbuild step runs `npx puppeteer browsers install chrome`).
-    PUPPETEER_CACHE_DIR = ".cache/puppeteer"
-
-[[plugins]]
-    package = "netlify-plugin-cache"
-    [plugins.inputs]
-    paths = [".cache/puppeteer"]
-
+# NOTE: Netlify only reads [build]/[build.environment]/[[plugins]] from a
+# netlify.toml at the repo root (see /netlify.toml) - never from a copy that
+# ends up inside the publish directory after the build runs. The actual
+# build command/publish directory/base for this site are set directly in
+# the Netlify dashboard (Site settings > Build & deploy), confirmed as
+# "dist" - not the "/build" this file used to (harmlessly) claim.
+#
+# What DOES apply from here: Netlify re-reads netlify.toml/_redirects found
+# inside the already-built publish directory for post-build redirect/header
+# rules. vue-cli-service copies this file verbatim into dist/, so the rule
+# below is what actually powers the SPA fallback in production.
 [[redirects]]
     from = "/*"
     to = "/index.html"
