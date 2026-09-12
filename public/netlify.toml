@@ -3,6 +3,19 @@
     publish = "/build"
     base = "/"
 
+[build.environment]
+    # Puppeteer's default cache dir (~/.cache/puppeteer, i.e.
+    # /opt/buildhome/.cache/puppeteer) isn't covered by Netlify's built-in
+    # dependency caching, so it's redirected here and persisted explicitly
+    # via netlify-plugin-cache below to avoid re-downloading Chrome on every
+    # build (the postbuild step runs `npx puppeteer browsers install chrome`).
+    PUPPETEER_CACHE_DIR = ".cache/puppeteer"
+
+[[plugins]]
+    package = "netlify-plugin-cache"
+    [plugins.inputs]
+    paths = [".cache/puppeteer"]
+
 [[redirects]]
     from = "/*"
     to = "/index.html"

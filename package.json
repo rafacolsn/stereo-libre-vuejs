@@ -6,7 +6,7 @@
     "serve": "vue-cli-service serve",
     "prebuild": "node scripts/fetch-wp-data.js",
     "build": "vue-cli-service build",
-    "postbuild": "node scripts/generate-sitemap.js && node scripts/prerender.js",
+    "postbuild": "node scripts/generate-sitemap.js && npx puppeteer browsers install chrome && node scripts/prerender.js",
     "lint": "vue-cli-service lint"
   },
   "dependencies": {
