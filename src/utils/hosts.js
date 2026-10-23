@@ -5,23 +5,23 @@ export const CONTACT_EMAIL = 'plug@stereolibre.be';
 export const hosts = {
     raph: {
         slug: 'raph',
+        phone: '+32 476 48 37 10',
         name: 'Raph',
         nickname: "l'éclectique",
         photo: 'Raph.jpg',
-        pitch: "Voix singulières, paroles qui comptent, guitares qui transpirent et sons venus d'ailleurs.",
     },
     jerome: {
         slug: 'jerome',
+        phone: '+32 496 94 00 67',
         name: 'Jérôme',
         nickname: 'le pilier',
         photo: 'Dje.jpg',
-        pitch: "Fondateur de l'émission, vingt-cinq ans de radio et une passion pour la scène belge.",
     },
     adri: {
         slug: 'adri',
+        phone: '+32 497 50 19 02',
         name: 'Adri',
         nickname: "l'énergie live",
         photo: 'Adri.jpg',
-        pitch: 'Infatigable de concerts, dénicheur d\'invités, toujours un plan pour voir un groupe avant tout le monde.',
     },
 };

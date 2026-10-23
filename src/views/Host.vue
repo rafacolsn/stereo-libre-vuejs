@@ -1,26 +1,25 @@
 <template>
   <div class="host-page" v-if="host">
     <div class="host-card">
-      <div class="photo" :style="{backgroundImage: `url(${photoUrl})`}"></div>
+      <div class="cta-block">
+        <p class="kicker">STÉRÉO LIBRE · Equinoxe FM 105</p>
+        <p class="cta-title">Tu fais de la musique ?<br>Viens passer à l'antenne.</p>
+        <p class="cta-text">Un projet, un disque, un concert à annoncer : écris-nous, on te répond.</p>
+        <a class="btn primary" :href="mailtoUrl">✉ {{ email }}</a>
+        <a class="btn" :href="vcardUrl" :download="vcardFileName">＋ Enregistrer le contact</a>
+      </div>
+
+      <div class="photo" :style="{backgroundImage: `url(${photoUrl})`}">
+        <h1 class="photo-name">{{ host.name }}</h1>
+      </div>
 
       <div class="body">
-        <p class="kicker">STÉRÉO LIBRE · Equinoxe FM 105</p>
-        <h1>{{ host.name }}, <span>{{ host.nickname }}</span></h1>
-        <p class="pitch">{{ host.pitch }}</p>
-
-        <div class="cta-block">
-          <p class="cta-title">Tu fais de la musique ?<br>Viens passer à l'antenne.</p>
-          <p class="cta-text">Un projet, un disque, un concert à annoncer : écris-nous, on te répond.</p>
-          <a class="btn primary" :href="mailtoUrl">✉ {{ email }}</a>
-          <a class="btn" :href="vcardUrl" :download="vcardFileName">＋ Enregistrer le contact</a>
-        </div>
 
         <div class="listen-block">
           <p class="label">ÉCOUTER</p>
           <p class="schedule">
             Le dimanche de 20 h à 22 h sur
             <a href="https://www.equinoxefm.be" target="_blank" rel="noopener">Equinoxe FM</a> (105 FM, Liège)
-            · rediffusion le vendredi à minuit
           </p>
           <div class="platforms">
             <a v-for="platform in platforms" :key="platform.label" :href="platform.url"
@@ -85,6 +84,7 @@ export default {
         `N:;${this.host.name};;;`,
         `FN:${this.host.name} — Stéréo Libre`,
         'ORG:Stéréo Libre (Equinoxe FM)',
+        `TEL;TYPE=CELL:${this.host.phone}`,
         `EMAIL;TYPE=INTERNET:${this.email}`,
         `URL:https://www.stereolibre.be/${this.host.slug}`,
         'END:VCARD',
@@ -114,6 +114,7 @@ export default {
 }
 
 .photo {
+  position: relative;
   height: 18rem;
   background-size: cover;
   background-position: top center;
@@ -130,28 +131,27 @@ export default {
   letter-spacing: .08em;
 }
 
-h1 {
-  font-size: 2rem;
+.photo-name {
+  position: absolute;
+  right: 1rem;
+  bottom: .75rem;
+  margin: 0;
+  font-size: 2.5rem;
   font-weight: bold;
-  color: black;
-  line-height: 1.2;
-  margin: .3rem 0 .5rem;
-
-  span {
-    font-weight: normal;
-  }
-}
-
-.pitch {
-  margin-bottom: 1.5rem;
+  line-height: 1;
+  color: white;
+  text-shadow: 0 2px 12px rgba(0, 0, 0, 0.7);
 }
 
 .cta-block {
   background: black;
   color: white;
-  border-radius: 10px;
-  padding: 1.25rem;
-  margin-bottom: 1.5rem;
+  padding: 1.5rem;
+
+  .kicker {
+    color: #d3d3d3;
+    margin-bottom: .5rem;
+  }
 }
 
 .cta-title {
