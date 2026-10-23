@@ -5,6 +5,7 @@ import MainView from "@/views/MainView.vue";
 import History from "@/views/History";
 // import Category from "@/views/Category";
 import Us from "@/views/Us";
+import Host from "@/views/Host";
 
 Vue.use(VueRouter);
 
@@ -40,6 +41,14 @@ const router = new VueRouter({
             name: 'history',
             component: History,
         },
+        // Pages "carte de visite" (QR codes au verso des cartes)
+        {
+            path: '/:host(raph|jerome|adri)',
+            name: 'host',
+            component: Host,
+        },
+        { path: '/dje', redirect: '/jerome' },
+        { path: '/djé', redirect: '/jerome' },
 
     ]
 })

@@ -60,6 +60,7 @@ function buildRoutes() {
         {route: '/', outFile: 'index.html'},
         {route: '/us', outFile: 'us/index.html'},
         {route: '/history', outFile: 'history/index.html'},
+        ...['raph', 'jerome', 'adri'].map((slug) => ({route: `/${slug}`, outFile: `${slug}/index.html`})),
         ...categories.map((cat) => ({route: `/category/${cat.id}`, outFile: `category/${cat.id}/index.html`})),
         ...episodes.map((ep) => ({route: `/episode/${ep.id}`, outFile: `episode/${ep.id}/index.html`})),
     ];

@@ -1,7 +1,7 @@
 <template>
   <div id="app">
     <Menu></Menu>
-    <Header v-if="$route.name !== 'episode'"></Header>
+    <Header v-if="!['episode', 'host'].includes($route.name)"></Header>
     <div>
       <router-view></router-view>
     </div>
