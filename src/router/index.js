@@ -6,6 +6,7 @@ import History from "@/views/History";
 // import Category from "@/views/Category";
 import Us from "@/views/Us";
 import Host from "@/views/Host";
+import Scan from "@/views/Scan";
 
 Vue.use(VueRouter);
 
@@ -49,6 +50,12 @@ const router = new VueRouter({
         },
         { path: '/dje', redirect: '/jerome' },
         { path: '/djé', redirect: '/jerome' },
+        // Page ciblée par le QR code des stickers (lieux de concert)
+        {
+            path: '/scan',
+            name: 'scan',
+            component: Scan,
+        },
 
     ]
 })

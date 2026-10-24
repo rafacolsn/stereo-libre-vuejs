@@ -1,6 +1,13 @@
 <template>
-  <div class="player" :style="{ '--color': color }">
-    <div class="player-label">▶ ÉCOUTER L'ÉPISODE</div>
+  <div class="player" :class="{ compact }" :style="{ '--color': color }">
+    <div class="player-label">{{ label }}</div>
+
+    <!-- Titre optionnel (page /scan) : évite un bloc séparé au-dessus du lecteur -->
+    <div v-if="title" class="player-heading">
+      <router-link v-if="link" :to="link" class="player-title" v-html="title"></router-link>
+      <p v-else class="player-title" v-html="title"></p>
+      <p v-if="subtitle" class="player-subtitle">{{ subtitle }}</p>
+    </div>
 
     <div class="player-controls">
       <button class="play-btn" @click="togglePlay" :aria-label="playing ? 'Pause' : 'Play'">
@@ -25,7 +32,7 @@
       </div>
     </div>
 
-    <div class="player-extras">
+    <div v-if="!compact" class="player-extras">
       <div class="speed-controls">
         <span class="extras-label">Vitesse</span>
         <button
@@ -58,7 +65,13 @@ export default {
   name: 'AudioPlayer',
   props: {
     src: { type: String, required: true },
-    color: { type: String, default: '#899499' }
+    color: { type: String, default: '#899499' },
+    label: { type: String, default: "▶ ÉCOUTER L'ÉPISODE" },
+    title: { type: String, default: null },
+    subtitle: { type: String, default: null },
+    link: { type: String, default: null },
+    // Version resserrée : sans vitesse ni téléchargement, marges réduites
+    compact: { type: Boolean, default: false },
   },
   data() {
     return {
@@ -121,6 +134,33 @@ export default {
   padding: 1.8rem 2rem;
   box-shadow: 0 8px 32px rgba(0, 0, 0, 0.18);
   margin: 2.5rem 0;
+
+  &.compact {
+    padding: 1.25rem 1.5rem;
+    margin: 0;
+
+    .player-label {
+      margin-bottom: .6rem;
+    }
+  }
+}
+
+.player-heading {
+  margin-bottom: 1rem;
+}
+
+.player-title {
+  display: block;
+  color: white;
+  font-weight: bold;
+  line-height: 1.3;
+  text-transform: uppercase;
+}
+
+.player-subtitle {
+  font-size: 0.8rem;
+  color: rgba(255, 255, 255, 0.5);
+  margin-top: 0.2rem;
 }
 
 .player-label {
