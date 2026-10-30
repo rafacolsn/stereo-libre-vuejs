@@ -51,7 +51,7 @@
       <div class="artists">
         <p class="artists-title">Tu fais de la musique ?<br>Viens passer à l'antenne.</p>
         <p class="artists-text">Un projet, un disque, un concert à annoncer : écris-nous, on te répond.</p>
-        <a class="btn" :href="mailtoUrl">✉ {{ email }}</a>
+        <a class="btn" href="#" @click.prevent="mail">✉ Nous écrire</a>
       </div>
 
       <div class="links">
@@ -68,7 +68,7 @@ import moment from "moment";
 import AudioPlayer from "@/components/AudioPlayer";
 import PulseLoader from 'vue-spinner/src/PulseLoader.vue';
 import {platforms} from "@/utils/platforms";
-import {CONTACT_EMAIL} from "@/utils/hosts";
+import {openMail} from "@/utils/contact";
 import {getColorById} from "@/utils/colors";
 
 // Page ciblée par le QR code des stickers collés dans les lieux de concert.
@@ -92,7 +92,6 @@ export default {
   data() {
     return {
       platforms,
-      email: CONTACT_EMAIL,
     }
   },
   computed: {
@@ -110,9 +109,10 @@ export default {
       const match = this.latest?.content?.match(/src="([^"]+\.mp3[^"]*)"/);
       return match ? match[1] : null;
     },
-    mailtoUrl() {
-      const subject = encodeURIComponent('Stéréo Libre — contact (sticker)');
-      return `mailto:${this.email}?subject=${subject}`;
+  },
+  methods: {
+    mail() {
+      openMail('Stéréo Libre — contact (sticker)');
     },
   },
   components: {

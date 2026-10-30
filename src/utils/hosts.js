@@ -1,25 +1,24 @@
 // Pages "carte de visite" : une par animateur, ciblées par les QR codes
 // imprimés au verso des cartes (ex. https://www.stereolibre.be/raph?src=carte).
-export const CONTACT_EMAIL = 'plug@stereolibre.be';
-
+// Numéros encodés en base64 (anti-spam), décodés au clic dans utils/contact.js.
 export const hosts = {
     raph: {
         slug: 'raph',
-        phone: '+32 476 48 37 10',
+        phoneB64: 'KzMyIDQ3NiA0OCAzNyAxMA==',
         name: 'Raph',
         nickname: "l'éclectique",
         photo: 'Raph.jpg',
     },
     jerome: {
         slug: 'jerome',
-        phone: '+32 496 94 00 67',
+        phoneB64: 'KzMyIDQ5NiA5NCAwMCA2Nw==',
         name: 'Jérôme',
         nickname: 'le pilier',
         photo: 'Dje.jpg',
     },
     adri: {
         slug: 'adri',
-        phone: '+32 497 50 19 02',
+        phoneB64: 'KzMyIDQ5NyA1MCAxOSAwMg==',
         name: 'Adri',
         nickname: "l'énergie live",
         photo: 'Adri.jpg',

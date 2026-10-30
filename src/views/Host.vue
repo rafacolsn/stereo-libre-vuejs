@@ -5,8 +5,8 @@
         <p class="kicker">STÉRÉO LIBRE · Equinoxe FM 105</p>
         <p class="cta-title">Tu fais de la musique ?<br>Viens passer à l'antenne.</p>
         <p class="cta-text">Un projet, un disque, un concert à annoncer : écris-nous, on te répond.</p>
-        <a class="btn primary" :href="mailtoUrl">✉ {{ email }}</a>
-        <a class="btn" :href="vcardUrl" :download="vcardFileName">＋ Enregistrer le contact</a>
+        <a class="btn primary" href="#" @click.prevent="mail">✉ Nous écrire</a>
+        <a class="btn" href="#" @click.prevent="saveContact">＋ Enregistrer le contact</a>
       </div>
 
       <div class="photo" :style="{backgroundImage: `url(${photoUrl})`}">
@@ -40,7 +40,8 @@
 </template>
 
 <script>
-import {hosts, CONTACT_EMAIL} from "@/utils/hosts";
+import {hosts} from "@/utils/hosts";
+import {openMail, downloadVcard} from "@/utils/contact";
 import {platforms} from "@/utils/platforms";
 
 export default {
@@ -60,7 +61,6 @@ export default {
   data() {
     return {
       platforms,
-      email: CONTACT_EMAIL,
     }
   },
   computed: {
@@ -70,26 +70,13 @@ export default {
     photoUrl() {
       return require(`@/assets/${this.host.photo}`);
     },
-    mailtoUrl() {
-      const subject = encodeURIComponent(`Stéréo Libre — contact via ${this.host.name}`);
-      return `mailto:${this.email}?subject=${subject}`;
+  },
+  methods: {
+    mail() {
+      openMail(`Stéréo Libre — contact via ${this.host.name}`);
     },
-    vcardFileName() {
-      return `stereo-libre-${this.host.slug}.vcf`;
-    },
-    vcardUrl() {
-      const vcard = [
-        'BEGIN:VCARD',
-        'VERSION:3.0',
-        `N:;${this.host.name};;;`,
-        `FN:${this.host.name} — Stéréo Libre`,
-        'ORG:Stéréo Libre (Equinoxe FM)',
-        `TEL;TYPE=CELL:${this.host.phone}`,
-        `EMAIL;TYPE=INTERNET:${this.email}`,
-        `URL:https://www.stereolibre.be/${this.host.slug}`,
-        'END:VCARD',
-      ].join('\r\n');
-      return `data:text/vcard;charset=utf-8,${encodeURIComponent(vcard)}`;
+    saveContact() {
+      downloadVcard(this.host);
     },
   },
   created() {
